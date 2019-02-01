@@ -1,7 +1,7 @@
-# Meta-Storms 2
+# Parallel-Meta 3.5
 
-![Version](https://img.shields.io/badge/Version-std%202.2.1-brightgreen.svg)
-![Release date](https://img.shields.io/badge/Release%20date-Jan.%204%2C%202019-brightgreen.svg)
+![Version](https://img.shields.io/badge/Version-3.5-brightgreen.svg)
+![Release date](https://img.shields.io/badge/Release%20date-Feb.%201%2C%202019-brightgreen.svg)
 
 
 
@@ -14,13 +14,13 @@
 
 # Introduction
 
-Meta-Storms 2 is the standalone implementation of the Microbiome Search Engine (MSE; http://mse.single-cell.cn). MSE is a search engine designed to efficiently search a database of microbiome samples and identify similar samples based on phylogenetic or functional relatedness. Meta-Storms 2 consists of the following steps: (i) creating a database composed of reference microbiome samples, and (ii) searching for similar samples in the database with given query microbiome sample(s) via phylogenetic similarities. Meta-Storms 2 relies on an advanced indexing algorithm, providing a fast, and constant, search speed in very large databases. 
+Parallel-META 3 is a comprehensive and full-automatic computational toolkit for rapid data mining among microbiome datasets, with advanced features including sequence profiling and OTU picking, rRNA copy number calibration, functional prediction, diversity statistics, bio-marker selection, interaction network construction, vector-graph-based visualization and parallel computing. Both metagenomic shotgun sequences and 16S/18S rRNA amplicon sequences are accepted.
 
 # System Requirement and dependency
 
 ## Hardware Requirements
 
-Meta-Storms 2 only requires a standard computer with sufficient RAM to support the operations defined by a user. For typical users, this would be a computer with about 2 GB of RAM. For optimal performance, we recommend a computer with the following specs:
+Parallel-META 3 only requires a standard computer with sufficient RAM to support the operations defined by a user. For typical users, this would be a computer with about 2 GB of RAM. For optimal performance, we recommend a computer with the following specs:
 
   RAM: 8+ GB  
   CPU: 4+ cores, 3.3+ GHz/core

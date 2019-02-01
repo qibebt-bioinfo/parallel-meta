@@ -27,25 +27,43 @@ Parallel-META 3 only requires a standard computer with sufficient RAM to support
 
 ## Software Requirements
 
-OpenMP library is the C/C++ parallel computing library. Most Linux releases have OpenMP already been installed in the system. In Mac OS X, to install the compiler that supports OpenMP, we recommend using the Homebrew package manager:
+### Rscript environment:
+
+For statistical analysis and pdf format output, Parallel-META 3 requires cran R (http://cran.r-project.org/) 3.0 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
+Bowtie2 (2.1.0 or higher, included in the package):
+Bowtie2 has been integrated in the package. If you want to install/update manually, please download from
 ```
-brew install gcc --without-multilib
+http://sourceforge.net/projects/bowtie-bio/files/bowtie2/
 ```
+and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+
+### HMMER 3 (3.0 or higher, included in the package):
+
+HMMER3 has been integrated in the package. If you want to install/update manually, please download from
+```
+http://hmmer.janelia.org/software/
+```
+and put the “hmmsearch” to $ParallelMETA/HMMER/bin/.
+
+### Compiler (only required by source code package):
+g++ 4.0 or higher for Linux / g++-6 6.0 or higher for Mac OS X.
 
 # Installation guide
 
 ## Automatic Installation (recommended)
 
-At present, Meta-Storms 2 provides a fully automatic installer for easy installation.
+Now the Parallel-META provides a fully automatic installer for easy installation.
 
-a. Download the package:
+a. Extract the package:
+
 ```
-git clone https://github.com/qibebt-bioinfo/meta-storms.git	
+tar –xzvf parallel-meta-3.tar.gz
 ```
 
-b. Install by installer:
+b. Install
+
 ```
-cd meta-storms
+cd parallel-meta
 source install.sh
 ```
 
@@ -55,22 +73,32 @@ The example dataset could be found at “example” folder. Check the “example
 
 ## Manual Installation
 
-If the automatic installer fails, Meta-Storms 2 can still be installed manually.
+If the automatic installer failed, Parallel-META 3 can still be installed manually.
 
-a. Download the package:
+a. Extract the package:
+
 ```
-git clone https://github.com/qibebt-bioinfo/meta-storms.git	
+tar –xzvf parallel-meta-3.tar.gz
 ```
 
-b. Configure the environment variables (the default environment variable configuration file is “~/.bashrc”):
+b. Configure the environment variables (default environment variable configuration file is located at “~/.bashrc” or “~/.bash_profile”)
+
 ```
-export MetaStorms=Path to Meta-Storms 2
-export PATH=”$PATH:$MetaStorms/bin/”
+export ParallelMETA=Path to Parallel-META 3
+export PATH=”$PATH:$ParallelMETA/bin”
 source ~/.bashrc
 ```
-c. Compile the source code:
+
+c. Install R packages
+
 ```
-cd meta-storms
+Rscript $ParallelMETA/Rscript/config.R
+```
+
+d. Compile the source code* (only required by the source code package):
+
+```
+cd parallel-meta
 make
 ```
 

@@ -1,0 +1,12 @@
+// Updated at Jan 30, 2019
+// Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
+// Code by: Honglei Wang, Gongchao Jing, Xiaoquan Su
+// Define the version of Parallel-META toolkit
+// Supports BIOM
+
+#ifndef _VERSION_H
+#define _VERSION_H
+
+#define Version "3.5"
+
+#endif

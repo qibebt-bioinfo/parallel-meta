@@ -8,13 +8,18 @@
 ## Contents
 
 - [Introduction](#introduction)
-- [System Requirement and dependency](#system-requirement-and-dependency)
 - [Download](#download)
+- [System Requirement and dependency](#system-requirement-and-dependency)
 - [Installation guide](#installation-guide)
 
 # Introduction
 
 Parallel-META 3 is a comprehensive and full-automatic computational toolkit for rapid data mining among microbiome datasets, with advanced features including sequence profiling and OTU picking, rRNA copy number calibration, functional prediction, diversity statistics, bio-marker selection, interaction network construction, vector-graph-based visualization and parallel computing. Both metagenomic shotgun sequences and 16S/18S rRNA amplicon sequences are accepted.
+
+# Download
+
+The latest release is available at:
+http://bioinfo.single-cell.cn/parallel-meta.html
 
 # System Requirement and dependency
 
@@ -42,11 +47,6 @@ http://hmmer.janelia.org/software/ and put the “hmmsearch” to $ParallelMETA/
 
 ### Compiler (only required by source code package):
 g++ 4.0 or higher for Linux / g++-6 6.0 or higher for Mac OS X.
-
-# Download
-
-The latest release is available at:
-http://bioinfo.single-cell.cn/parallel-meta.html
 
 # Installation guide
 

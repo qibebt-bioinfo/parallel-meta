@@ -10,7 +10,6 @@
 - [Introduction](#introduction)
 - [System Requirement and dependency](#system-requirement-and-dependency)
 - [Installation guide](#installation-guide)
-- [Supplementary](#supplementary)
 
 # Introduction
 
@@ -97,7 +96,3 @@ d. Compile the source code* (only required by the source code package):
 cd parallel-meta
 make
 ```
-
-# Supplementary
-
-The test code and datasets for reproducing the results of manuscript "Model-free disease classification across cohorts via microbiome search" is available here ([Linux X86_64](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_linux.tar.gz) / [Mac OS X](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_mac.tar.gz), ~ 892 MB). See “Readme.txt” in the package for usage and details.

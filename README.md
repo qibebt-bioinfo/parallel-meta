@@ -32,17 +32,14 @@ Parallel-META 3 only requires a standard computer with sufficient RAM to support
 For statistical analysis and pdf format output, Parallel-META 3 requires cran R (http://cran.r-project.org/) 3.0 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
 Bowtie2 (2.1.0 or higher, included in the package):
 Bowtie2 has been integrated in the package. If you want to install/update manually, please download from
-```
-http://sourceforge.net/projects/bowtie-bio/files/bowtie2/
-```
+http://sourceforge.net/projects/bowtie-bio/files/bowtie2/(#http://sourceforge.net/projects/bowtie-bio/files/bowtie2/)
+
 and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
 
 ### HMMER 3 (3.0 or higher, included in the package):
 
 HMMER3 has been integrated in the package. If you want to install/update manually, please download from
-```
 http://hmmer.janelia.org/software/
-```
 and put the “hmmsearch” to $ParallelMETA/HMMER/bin/.
 
 ### Compiler (only required by source code package):

@@ -9,6 +9,7 @@
 
 - [Introduction](#introduction)
 - [System Requirement and dependency](#system-requirement-and-dependency)
+- [Download](#down)
 - [Installation guide](#installation-guide)
 
 # Introduction
@@ -32,8 +33,7 @@ For statistical analysis and pdf format output, Parallel-META 3 requires cran R 
 
 ### Bowtie2 (2.1.0 or higher, included in the package):
 
-Bowtie2 has been integrated in the package. If you want to install/update manually, please download from
-http://sourceforge.net/projects/bowtie-bio/files/bowtie2/ and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+Bowtie2 has been integrated in the package. If you want to install/update manually, please download from http://sourceforge.net/projects/bowtie-bio/files/bowtie2/ and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
 
 ### HMMER 3 (3.0 or higher, included in the package):
 
@@ -42,6 +42,11 @@ http://hmmer.janelia.org/software/ and put the “hmmsearch” to $ParallelMETA/
 
 ### Compiler (only required by source code package):
 g++ 4.0 or higher for Linux / g++-6 6.0 or higher for Mac OS X.
+
+# Download
+
+The latest release is available at:
+http://bioinfo.single-cell.cn/parallel-meta.html
 
 # Installation guide
 

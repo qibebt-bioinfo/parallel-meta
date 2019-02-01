@@ -9,7 +9,7 @@
 
 - [Introduction](#introduction)
 - [System Requirement and dependency](#system-requirement-and-dependency)
-- [Download](#down)
+- [Download](#download)
 - [Installation guide](#installation-guide)
 
 # Introduction

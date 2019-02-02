@@ -31,7 +31,7 @@ Parallel-META 3 only requires a standard computer with sufficient RAM to support
 OpenMP library is the C/C++ parallel computing library. Most Linux releases have OpenMP already been installed in the system. In Mac OS X, to install the compiler that supports OpenMP, we recommend using the Homebrew package manager:
 
 ```
-		brew install gcc --without-multilib
+brew install gcc --without-multilib
 ```
 
 ### Rscript environment
@@ -43,7 +43,7 @@ For statistical analysis and pdf format output, Parallel-META 3 requires cran-R 
 Bowtie2 has been integrated in the package. If you want to install/update manually, please download from http://sourceforge.net/projects/bowtie-bio/files/bowtie2/
 and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
 
-### HMMER 3 (3.0 or higher, included in the package)
+### HMMER 3 (3.2 or higher, included in the package)
 
 HMMER3 has been integrated in the package. If you want to install/update manually, please download from
 http://www.hmmer.org/

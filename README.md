@@ -8,18 +8,12 @@
 ## Contents
 
 - [Introduction](#introduction)
-- [Download](#download)
 - [System Requirement and dependency](#system-requirement-and-dependency)
 - [Installation guide](#installation-guide)
 
 # Introduction
 
 Parallel-META 3 is a comprehensive and full-automatic computational toolkit for rapid data mining among microbiome datasets, with advanced features including sequence profiling and OTU picking, rRNA copy number calibration, functional prediction, diversity statistics, bio-marker selection, interaction network construction, vector-graph-based visualization and parallel computing. Both metagenomic shotgun sequences and 16S/18S rRNA amplicon sequences are accepted.
-
-# Download
-
-The latest release is available at:
-http://bioinfo.single-cell.cn/parallel-meta.html
 
 # System Requirement and dependency
 
@@ -32,23 +26,33 @@ Parallel-META 3 only requires a standard computer with sufficient RAM to support
 
 ## Software Requirements
 
-### Rscript environment:
+### OpenMP
 
-For statistical analysis and pdf format output, Parallel-META 3 requires cran R (http://cran.r-project.org/) 3.0 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
+OpenMP library is the C/C++ parallel computing library. Most Linux releases have OpenMP already been installed in the system. In Mac OS X, to install the compiler that supports OpenMP, we recommend using the Homebrew package manager:
 
-### Bowtie2 (2.1.0 or higher, included in the package):
+```
+		brew install gcc --without-multilib
+```
 
-Bowtie2 has been integrated in the package. If you want to install/update manually, please download from http://sourceforge.net/projects/bowtie-bio/files/bowtie2/ and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+### Rscript environment
 
-### HMMER 3 (3.0 or higher, included in the package):
+For statistical analysis and pdf format output, Parallel-META 3 requires cran-R (http://cran.r-project.org/) 3.0 or higher (3.2 or higher is recommended) for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
+
+### Bowtie2 (2.1.0 or higher, included in the package)
+
+Bowtie2 has been integrated in the package. If you want to install/update manually, please download from http://sourceforge.net/projects/bowtie-bio/files/bowtie2/
+and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+
+### HMMER 3 (3.0 or higher, included in the package)
 
 HMMER3 has been integrated in the package. If you want to install/update manually, please download from
-http://hmmer.janelia.org/software/ and put the “hmmsearch” to $ParallelMETA/HMMER/bin/.
-
-### Compiler (only required by source code package):
-g++ 4.0 or higher for Linux / g++-6 6.0 or higher for Mac OS X.
+http://www.hmmer.org/
+and put the “hmmsearch” to $ParallelMETA/HMMER/bin/.
 
 # Installation guide
+
+The latest release is available at:
+http://bioinfo.single-cell.cn/parallel-meta.html
 
 ## Automatic Installation (recommended)
 

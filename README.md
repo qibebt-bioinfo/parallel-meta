@@ -43,7 +43,7 @@ For statistical analysis and pdf format output, Parallel-META 3 requires cran-R 
 Bowtie2 has been integrated in the package. If you want to install/update manually, please download from http://sourceforge.net/projects/bowtie-bio/files/bowtie2/
 and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
 
-### HMMER 3 (3.2 or higher, included in the package)
+### HMMER 3 (3.0 or higher, included in the package)
 
 HMMER3 has been integrated in the package. If you want to install/update manually, please download from
 http://www.hmmer.org/

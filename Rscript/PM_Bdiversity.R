@@ -57,7 +57,7 @@ allmetadata<-read.table(metadata.filename,header=T,sep="\t",row.names=1)
 if(length(allmetadata)==1){metadata<-data.frame(allmetadata[order(rownames(allmetadata)),])
                            all_group<-colnames(metadata)<-colnames(allmetadata)
                            }else{
-                           metadata<-allmetadata[order(rownames(allmetadata)),which(sapply(allmetadata,var)!=0)]
+                           metadata<-allmetadata[order(rownames(allmetadata)),which(sapply(allmetadata,class)!=0)]
                            all_group<-colnames(metadata)
                            all_group_f<-colnames(metadata)[sapply(metadata,class)=="factor"]
                            all_group_n<-colnames(metadata)[sapply(metadata,class)!="factor"]

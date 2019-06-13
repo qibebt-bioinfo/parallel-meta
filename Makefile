@@ -1,6 +1,11 @@
 CC:=g++
 ifneq (,$(findstring Darwin,$(shell uname)))
-      CC:=g++-8
+	exist = $(shell if [ -e '/usr/local/bin/g++-9' ]; then echo "exist"; else echo "notexist"; fi;)
+	ifeq ($(exist),exist)
+		CC:=g++-9
+	else
+		CC:=g++-8
+	endif
 endif
 OMPFLG=-fopenmp
 HASHFLG=-Wno-deprecated

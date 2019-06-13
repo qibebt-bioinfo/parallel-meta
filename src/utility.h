@@ -32,6 +32,7 @@ string Check_Env(){
     
     string path =  getenv("ParallelMETA");
     return path;
+    //return "/opt/tools/parallel-meta-3.5.1/";
     }
 
 int Check_Path(const char * path, int type){

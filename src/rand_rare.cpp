@@ -1,4 +1,4 @@
-// Updated at Sep 25, 2018
+// Updated at Mar 19, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // _OTU_Parser
@@ -290,7 +290,7 @@ int main(int argc, char * argv[]){
 
           	int count_out = 0;
           	vector <string> sam_name_out;
-          	sam_name_out.push_back("samples"); // with id
+          	//sam_name_out.push_back("samples"); // with id
 
           	for (int i = 0; i < Infilename.size(); i ++){
               	vector <string> otus;

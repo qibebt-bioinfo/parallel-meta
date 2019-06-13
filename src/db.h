@@ -127,6 +127,10 @@ class _PMDB{
               static string Get_Args(){
                      return DB_args;
                      }
+                     
+              static string Get_Func_Args(){
+              		 return DB_func_args;
+			  }
                                           
       private:
               char DB_id;
@@ -140,6 +144,7 @@ class _PMDB{
               string DB_tree_id;
               string DB_tree_order;
               
+              string DB_func_path;
               string DB_func_id;
               string DB_func;
               string DB_func_des;
@@ -154,6 +159,9 @@ class _PMDB{
               void Make_base(){                   
                    DB_path = Check_Env();
                    DB_path += "/databases/";
+                   
+                   DB_func_path = DB_path + "KO/";
+                   
                    DB_path += DB_name;
                    DB_path += "/";                   
                    }
@@ -167,16 +175,19 @@ class _PMDB{
                    DB_tree_id = DB_path + "tree/id.txt";
                    DB_tree_order = DB_path + "tree/order.txt";
                    };
-              void Make_func(){
-                   DB_func_id = DB_path + "KO/ko_id.tab";
+              void Make_func(){                   
+                   DB_nsti = DB_path + "otu_nsti.tab";
                    DB_func = DB_path + "KO/ko.tab";
-                   DB_func_des = DB_path + "KO/ko_des.tab";
-                   DB_func_pw = DB_path + "KO/ko_pw.tab";
-                   DB_nsti = DB_path + "otu_nsti.tab";  
+                   
+                   DB_func_id = DB_func_path + "ko_id.tab";
+                   DB_func_des = DB_func_path + "ko_des.tab";
+                   DB_func_pw = DB_func_path + "ko_pw.tab";
+                     
                    }
                                  
               static map <char, vector <string> > DB_config;
-              static string DB_args;        
+              static string DB_args;
+			  static string DB_func_args;        
               static int DB_config_count;      
       };
 
@@ -268,6 +279,7 @@ int _PMDB::Load_Copy_Number(hash_map <string, float, std_string_hash> & cp_numbe
 //private
 map <char, vector <string> > _PMDB::DB_config = map <char, vector <string> > ();
 string _PMDB::DB_args = "Empty database";
+string _PMDB::DB_func_args = "Empty database";
 int _PMDB::DB_config_count = Load_config();
 
 int _PMDB::Load_config(){
@@ -285,6 +297,7 @@ int _PMDB::Load_config(){
                        }
        
        DB_args = "default is ";
+       DB_func_args = "default is ";
               
        int db_count = 0;
        string buffer;
@@ -323,6 +336,14 @@ int _PMDB::Load_config(){
                                 DB_args += ")";
                                 
                                 db_count ++;
+                                
+                                if (db_config_entry[7][0] == 'Y' || db_config_entry[7][0] == 'y') { //Is_func
+					if (DB_config.size() > 1) DB_func_args += ", or ";
+                                	DB_func_args += db_config_entry[0][0];
+                                	DB_func_args += " (";
+                                	DB_func_args += db_config_entry[3];
+                                	DB_func_args += ")";
+					} 
                                 }
        
        in_config.close();

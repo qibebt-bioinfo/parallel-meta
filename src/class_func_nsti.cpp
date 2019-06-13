@@ -46,6 +46,7 @@ int printhelp(){
     cout << "PM-predict-func-nsti [Option] Value" << endl;
     cout << "Options: " << endl;
     
+    cout << "\t-D (upper) ref database, " << _PMDB::Get_Func_Args() << endl;
     cout << "\t[Input options, required]" << endl;
     cout << "\t  -i Input single file" << endl;
     cout << "\tor" << endl;

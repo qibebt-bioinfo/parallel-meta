@@ -34,11 +34,12 @@ int Coren = 0;
 int printhelp(){
     
     cout << "Predict-func version: " << Version << endl;
-    cout << "\tFunctional prediction (16S only)" << endl;
+    cout << "\tFunctional prediction" << endl;
     cout << "Usage:" << endl;
     cout << "PM-predict-func [Option] Value" << endl;
     cout << "Options: " << endl;
     
+    cout << "\t-D (upper) ref database, " << _PMDB::Get_Func_Args() << endl;
     cout << "\t[Input options, required]" << endl;
     cout << "\t  -i Input single file" << endl;
     cout << "\tor" << endl;
@@ -61,8 +62,8 @@ int printhelp(){
 
 int Parse_Para(int argc, char * argv[]){
     
-    if (argc ==1) 
-		printhelp();
+    if (argc ==1)
+	printhelp();
     
     int i = 1;
     Mode = -1;

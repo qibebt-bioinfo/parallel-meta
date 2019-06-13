@@ -36,7 +36,8 @@ int printhelp(){
     cout << "Usage:" << endl;
     cout << "PM-predict-func-contribute [Option] Value" << endl;
     cout << "Options: " << endl;
-    
+
+    cout << "\t-D (upper) ref database, " << _PMDB::Get_Func_Args() << endl;
     cout << "\t[Input options, required]" << endl;
     cout << "\t  -i Input single file" << endl;
     cout << "\tor" << endl;

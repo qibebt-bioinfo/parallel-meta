@@ -68,7 +68,7 @@ cd parallel-meta
 source install.sh
 ```
 
-The package should take less than 1 minute to install on a computer with the specifications recommended above.
+The package should take less than 5 minutes to install on a computer with the specifications recommended above.
 
 The example dataset could be found at “example” folder. Check the “example/Readme” for details about the demo run.
 

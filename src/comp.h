@@ -1,4 +1,4 @@
-// Updated at Dec 27, 2018
+// Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -24,6 +24,8 @@
 #define COMP_H
 
 #define REG_SIZE 70
+
+#define MIN_DIST 0.00001
 
 using namespace std;
 
@@ -288,6 +290,9 @@ float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2){
               float dist_1 = 1- Dist_1[i];
               float dist_2 = 1- Dist_2[i];
               
+              dist_1 = (dist_1 < 0) ? MIN_DIST : dist_1;
+              dist_2 = (dist_2 < 0) ? MIN_DIST : dist_2;
+              
               float c1_1;
               float c1_2;
               
@@ -352,7 +357,9 @@ float _Comp_Tree::Calc_sim_unweight(float * Abd_1, float * Abd_2){
               float dist_1 = 1- Dist_1[i];
               float dist_2 = 1- Dist_2[i];
               
-              
+              dist_1 = (dist_1 < 0) ? MIN_DIST : dist_1;
+              dist_2 = (dist_2 < 0) ? MIN_DIST : dist_2;
+                            
               float c1_1 = 0;
               float c1_2 = 0;
               

@@ -1,4 +1,4 @@
-// Updated at Sept 20, 2018
+// Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 
@@ -32,7 +32,9 @@ string Check_Env(){
     
     string path =  getenv("ParallelMETA");
     return path;
-    //return "/opt/tools/parallel-meta-3.5.1/";
+    
+    //debug
+    //return "/opt/tools/parallel-meta/";
     }
 
 int Check_Path(const char * path, int type){

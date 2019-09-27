@@ -1,4 +1,4 @@
-// Updated at Dec 27, 2018
+// Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -40,7 +40,8 @@ int Cluster = 2;
 int Dist_metric = 0; //0: MS; 1: MS-uw; 2: cos 3: eu; 4: JSD
 
 int Mode = 0; //0: single, 1: multi_list, 2: multi_table
-
+//bool Reversed_table = true;
+ 
 int printhelp(){
     
     cout << "Comp-taxa version : " << Version << endl;
@@ -57,9 +58,11 @@ int printhelp(){
     cout << "\t  -p List files path prefix [Optional for -l]" << endl;
     cout << "\tor" << endl;
     cout << "\t  -T (upper) Input OTU count table (*.OTU.Count) for multi-sample comparison" << endl;
+    //cout << "\t  -R If the input table is reversed, T(rue) or F(alse), default is false [Optional for -T]" << endl;
+    
     cout << "\t[Output options]" << endl;
     cout << "\t  -o Output file, default is to output on screen" << endl;
-    cout << "\t  -d Output format, similarity (F) or distance (T), default is F" << endl;
+    cout << "\t  -d Output format, distance (T) or similarity (F), default is T" << endl;
     cout << "\t  -P (upper) Print heatmap and clusters, T(rue) or F(alse), default is F" << endl;
     
     cout << "\t[Other options]" << endl;
@@ -84,7 +87,7 @@ int Parse_Para(int argc, char * argv[]){
     Mode = 0; //default is single;
     
     Is_cp_correct = true;
-    Is_sim = true;
+    Is_sim = false;
     Is_heatmap = false;
     //Is_weight = true;
     Dist_metric = 0;
@@ -108,13 +111,14 @@ int Parse_Para(int argc, char * argv[]){
                             case 'p': Listprefix = argv[i+1]; break;
                             
                             case 'T': Tablefilename = argv[i+1]; Mode = 2; break;
+                            //case 'R': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Reversed_table = false; break;
                             
                             case 'o': Outfilename = argv[i+1]; break;
                             
                             //case 'w': if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F')) Is_weight = false; break;
                             case 'M': Dist_metric = atoi(argv[i+1]); break; 
                             case 'r': if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F')) Is_cp_correct = false; break;
-                            case 'd': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_sim = false; break;
+                            case 'd': if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F')) Is_sim = true; break;
                             case 'P': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_heatmap = true; break;
                             case 'c': Cluster = atoi(argv[i+1]); break;
                             
@@ -320,6 +324,7 @@ int main(int argc, char * argv[]){
            case 0: Single_Comp(); break;
            case 1: Multi_Comp(); break;
            case 2:{
+                   //_Table_Format table(Tablefilename.c_str(), Reversed_table);
                    _Table_Format table(Tablefilename.c_str());
                    Multi_Comp_Table(table); 
                    break;

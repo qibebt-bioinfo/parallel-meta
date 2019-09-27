@@ -274,13 +274,13 @@ int main(int argc, char * argv[]){
            if (Is_taxa){
            
            if ((Taxa_dist_type == 0) || (Taxa_dist_type == 2)){
-           sprintf(command, "%s/PM-comp-taxa -T %s/taxa.OTU.Count -o %s/taxa.dist -t %d -d T -P T -c %d -D %c", Bin_path.c_str(), Abd_dir.c_str(), Dist_dir.c_str(), Coren, Cluster, Ref_db);
+           sprintf(command, "%s/PM-comp-taxa -T %s/taxa.OTU.Count -o %s/taxa.dist -t %d -P T -c %d -D %c", Bin_path.c_str(), Abd_dir.c_str(), Dist_dir.c_str(), Coren, Cluster, Ref_db);
            Run_With_Error(command, "PM-comp-taxa", Error_file.c_str());
            outscript << command << endl;
            }
            
            if ((Taxa_dist_type == 1) || (Taxa_dist_type == 2)){
-           sprintf(command, "%s/PM-comp-taxa -T %s/taxa.OTU.Count -o %s/taxa.unweighted.dist -t %d -d T -P T -c %d -D %c -M 1", Bin_path.c_str(), Abd_dir.c_str(), Dist_dir.c_str(), Coren, Cluster, Ref_db);
+           sprintf(command, "%s/PM-comp-taxa -T %s/taxa.OTU.Count -o %s/taxa.unweighted.dist -t %d -P T -c %d -D %c -M 1", Bin_path.c_str(), Abd_dir.c_str(), Dist_dir.c_str(), Coren, Cluster, Ref_db);
            Run_With_Error(command, "PM-comp-taxa", Error_file.c_str());
            outscript << command << endl;
            }
@@ -288,7 +288,7 @@ int main(int argc, char * argv[]){
            
            if (Is_func){      
            //calc func dist
-           sprintf(command, "%s/PM-comp-func -T %s/func.KO.Count -o %s/func.dist -t %d -d T -P T -c %d -D %c", Bin_path.c_str(), Abd_dir.c_str(), Dist_dir.c_str(), Coren, Cluster, Ref_db);
+           sprintf(command, "%s/PM-comp-func -T %s/func.KO.Count -o %s/func.dist -t %d -P T -c %d -D %c", Bin_path.c_str(), Abd_dir.c_str(), Dist_dir.c_str(), Coren, Cluster, Ref_db);
            Run_With_Error(command, "PM-comp-func", Error_file.c_str());
            outscript << command << endl;
            }

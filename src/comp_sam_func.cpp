@@ -37,6 +37,7 @@ bool Is_sim; //true: sim, false: dist;
 int Mode = 0; //0: single, 1: multi, 2: multi_table
 bool Is_heatmap;
 int Cluster = 2;
+//bool Reversed_table = true;
 
 int printhelp(){
     
@@ -53,10 +54,11 @@ int printhelp(){
     cout << "\t  -p List file path prefix [Optional for -l]" << endl;
     cout << "\tor" << endl;
     cout << "\t  -T (upper) Input KO count table (*.KO.Count) for multi-sample comparison" << endl;
+    //cout << "\t  -R If the input table is reversed, T(rue) or F(alse), default is false [Optional for -T]" << endl;
     
     cout << "\t[Output options]" << endl;
     cout << "\t  -o Output file, default is to output on screen" << endl;
-    cout << "\t  -d Output format, similarity (F) or distance (T), default is F" << endl;
+    cout << "\t  -d Output format, distance (T) or similarity (F), default is T" << endl;
     cout << "\t  -P (upper) Print heatmap and clusters, T(rue) or F(alse), default is F" << endl;
     
     cout << "\t[Other options]" << endl;
@@ -78,7 +80,7 @@ int Parse_Para(int argc, char * argv[]){
     Coren = 0;
     Mode = true; //default is single;
     
-    Is_sim = true;
+    Is_sim = false;
     Is_heatmap = false;
     
     int i = 1;
@@ -97,9 +99,10 @@ int Parse_Para(int argc, char * argv[]){
             case 'l': Listfilename = argv[i+1]; Mode = 1; break;
             case 'p': Listprefix = argv[i+1]; break;
             case 'T': Tablefilename = argv[i+1]; Mode = 2; break;
+            //case 'R': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Reversed_table = false; break;
             case 'o': Outfilename = argv[i+1]; break;
                                         
-            case 'd': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_sim = false; break;
+            case 'd': if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F')) Is_sim = true; break;
             case 'M': Dist_metric = atoi(argv[i+1]); break;
             case 'P': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_heatmap = true; break;
             case 'c': Cluster = atoi(argv[i+1]); break;
@@ -311,7 +314,8 @@ int main(int argc, char * argv[]){
        case 0: Single_Comp(); break;
        case 1: Multi_Comp(); break;
        case 2:{
-            _Table_Format table(Tablefilename.c_str());
+            //_Table_Format table(Tablefilename.c_str(), Reversed_table);
+            _Table_Format table(Tablefilename.c_str()); 
             Multi_Comp_Table(table); 
             break;
             }

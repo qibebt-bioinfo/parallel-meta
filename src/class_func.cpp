@@ -1,4 +1,4 @@
-// Updated at Sep 20, 2018
+// Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 
@@ -50,7 +50,7 @@ int printhelp(){
     
     cout << "\t[Output options]" << endl;
     cout << "\t  -o Output path, default is \"Results_Func\"" << endl;
-    cout << "\t  -L (upper) If output list, T(rue) or F(alse), default is T [optional for -l]" << endl; 
+    cout << "\t  -L (upper) If output list (at \"Output_path/func.list\"), T(rue) or F(alse), default is T [optional for -l]" << endl; 
     
     cout << "\t[Other options]" << endl;
     cout << "\t  -t Cpu core number, default is auto" << endl;
@@ -124,8 +124,7 @@ int Parse_Para(int argc, char * argv[]){
         cout << "The " << Database.Get_Description() << " domain is not supported yet" << endl;
         exit(0);
         }
-    Check_Path(Out_path.c_str(), 1);
-    
+        
     if (Is_out_list) Outlistfile = Out_path + "/func.list";
     
     int max_core_number = sysconf(_SC_NPROCESSORS_CONF);
@@ -149,6 +148,7 @@ int main(int argc, char * argv[]){
     
     switch (Mode){
         case 0: {
+                Check_Path(Out_path.c_str(), 1);
 		        sam_num = 1;
                 Outfilename.push_back(Out_path + "/functions.txt");
                 KOs = _KO_OTU_Table_All(Database, sam_num, 0);
@@ -159,6 +159,7 @@ int main(int argc, char * argv[]){
                 break;
             	}
         case 1: {
+                Check_Path(Out_path.c_str(), 1);
 				sam_num = Load_List(Listfile.c_str(), Infilename, Sam_name, Listprefix);
                 for (int i = 0; i < sam_num; i ++){
                     Check_Path((Out_path + "/" + Sam_name[i]).c_str(), 1);
@@ -167,10 +168,11 @@ int main(int argc, char * argv[]){
                 KOs = _KO_OTU_Table_All(Database, sam_num, 0);
                 KOs.Load_Sample_Multi(Infilename, Sam_name, Coren);
                 if (Is_out_list){
-                	vector <string> sam_name_out;
-    				sam_name_out.push_back("samples"); // with id
-                	sam_name_out.insert(sam_name_out.end(), Sam_name.begin(), Sam_name.end());
-                	Make_list(Outlistfile.c_str(), Out_path.c_str(), sam_name_out, 1);
+                	//vector <string> sam_name_out;
+    				//sam_name_out.push_back("samples"); // with id
+                	//sam_name_out.insert(sam_name_out.end(), Sam_name.begin(), Sam_name.end());
+                	//Make_list(Outlistfile.c_str(), Out_path.c_str(), sam_name_out, 1);
+                	Make_list(Outlistfile.c_str(), Out_path.c_str(), Sam_name, 1);
 					}	
                 cout << "Total Sample Number is " << sam_num << endl;
                 cout << KOs.Output_Multi(Outfilename) << " KOs have been parsed out" << endl; 	

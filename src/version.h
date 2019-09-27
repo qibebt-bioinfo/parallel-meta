@@ -6,6 +6,6 @@
 #ifndef _VERSION_H
 #define _VERSION_H
 
-#define Version "3.5.1"
+#define Version "3.5.2"
 
 #endif

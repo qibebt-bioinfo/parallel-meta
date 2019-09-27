@@ -1,4 +1,4 @@
-// Updated at Sept 19, 2018
+// Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -208,7 +208,9 @@ int _KO_OTU_Table_All::Load_OTU_KO_Index(const char * abdfilename){
             
             while(strin >> index){
                 strin >> copy;
-                OTU_KO_Index[id].push_back(_KO_Index_Copy(index, copy));
+                //OTU_KO_Index[id].push_back(_KO_Index_Copy(index, copy));
+                //debug
+                OTU_KO_Index[id].push_back(_KO_Index_Copy(index - 1, copy));
             }
             
         }

@@ -1,4 +1,4 @@
-// Updated at Mar 19, 2019
+// Updated at Sept 27, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // _OTU_Parser
@@ -272,7 +272,9 @@ void Rare_Single_Boot(vector <string> otus, hash_map <string, int, std_string_ha
     
     for (hash_map <string, float, std_string_hash> :: iterator miter = abd.begin(); miter != abd.end(); miter ++){
         miter->second *= rate;
-        otu_count[miter->first] = Get_Int(miter->second);
+        int a_count = Get_Int(miter->second);
+        if (a_count > 0)
+           otu_count[miter->first] = a_count;
         }
     }
 

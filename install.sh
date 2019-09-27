@@ -16,7 +16,7 @@ Check_old_pm=`grep "export ParallelMETA"  $PATH_File|awk -F '=' '{print $1}'`
 Check_old_path=`grep "ParallelMETA/bin"  $PATH_File |sed 's/\(.\).*/\1/' |awk '{if($1!="#"){print "Ture";}}'`
 Add_Part="####DisabledbyParallelMETA3####"
 echo "**Parallel-META 3 Installation**"
-echo "**version 3.5.1**"
+echo "**version 3.5.2**"
 ###Build source code for src package###
 if [ -f "Makefile" ]
    then

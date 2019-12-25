@@ -129,10 +129,10 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 	Input options:
 		-i Sequence list file, pair-ended sequences are supported [Conflicts with l] (See Sequence format and sequence list)
 		-p List file path prefix [Optional for -i]
-	or 
+		or 
 		-l Taxonomic analysis results list [Conflicts with -i] (See Single_Sample.List)
 		-p List file path prefix [Optional for -l]
-	or
+		or
 		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
 	
 	Profiling parameters:

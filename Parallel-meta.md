@@ -168,3 +168,34 @@ Notice:
 
 ## PM-parallel-meta: sequence profiling 
 
+The PM-parallel-meta is the profiling tool for sequences. It accepts single shotgun sequences or 16S/18S rRNA sequences in FASTA or FASTQ format for taxonomical and predictive functional profiling.
+
+**Usage:**
+
+	PM-parallel-meta [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+
+	[Input options, required]
+		-m Input single sequence file (Shotgun) [Conflicts with -r and -R]
+	      or
+		-r Input single sequence file (rRNA targeted) [Conflicts with -m]
+	  	-R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]
+	  	-P (upper) Pair-end sequence orientation for -R
+	     	   0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0
+	
+	[Output options]
+	  	-o Output path, default is "Result"
+	
+	[Other options]
+	  	-e Alignment mode
+	     	   0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3
+	  	-k Sequence format check, T(rue) or F(alse), default is F
+	  	-L (upper) rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [Optional for -m, Conflicts with -r]
+	  	-f Functional analysis, T(rue) or F(alse), default is T
+	  	-t Cpu core number, default is auto
+	 	-h Help
+
+Example:
+	PM-parallel-meta –m meta.fasta –o metaresults –l 150

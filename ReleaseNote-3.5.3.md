@@ -11,6 +11,7 @@ Added the function of computing Bray-Curtis distance in PM-comp-taxa and PM-comp
 # II. Bug fixing
 	
 Fixed the bug of the output list of function prediction by PM-predict-func 
+
 Fixed the bug of the output list of rarefied samples by PM-rand-rare
 
 # III. Others

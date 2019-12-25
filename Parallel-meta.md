@@ -198,4 +198,85 @@ The PM-parallel-meta is the profiling tool for sequences. It accepts single shot
 	 	-h Help
 
 Example:
+
 	PM-parallel-meta –m meta.fasta –o metaresults –l 150
+
+## PM-format-seq: sequence format checking and re-formatting
+
+The PM-format-seq check the input sequence format (See Sequence format), and try to re-reformat the invalid input sequence file(s) with making a backup. 
+
+**Usage:**
+
+	PM-format-seq [Option] Value
+	
+	Options: 
+	
+	[Input options, required]
+	  	-i Input single sequence file in FASTA or FASTQ format
+	      or
+	  	-l Input sequence files list
+	  	-p List file path prefix for '-l' [Optional for -l]
+
+	[Other options]
+	  	-h Help
+
+Example:
+	PM-format-seq –i sample.fasta
+
+or
+
+	PM-format-seq –l list.txt 
+
+## PM-extract-rna: extracts the rRNA fragments from shotgun sequences 
+
+The PM-extract-rna can extract 16S & 18S rRNA fragments from shotgun sequences. This function has already been included in PM-parallel-meta with parameter “-m” for shotgun sequences. 
+
+**Usage:**
+
+	PM-extract-rna [Option] Value
+
+	Options:
+		-D (upper) Domain, B (Bacteria, 16S rRNA) or E (Eukaryote, 18S rRNA), default is B
+	
+	[Input options, required]
+	  	-m or -i Input single sequence file (Shotgun)
+	
+	[Output options]
+	  	-o Output Path, default is "Extract_RNA"
+	
+	[Other options]
+	  	-l rRNA length threshold of rRNA extraction. default is 0
+	  	-t Cpu core number, default is auto
+	  	-h Help
+
+
+Example:
+	PM-extract-rna –m examples/meta.fasta –o metaresults –e 1e-20 –l 150 
+
+## PM-plot-taxa: taxonomy profile visualization by Krona
+
+The PM-plot-taxa has already been integrated in program PM-parallel-meta.
+
+**Usage:**
+
+	PM-plot-taxa [Option] Value
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+
+	[Input options, required]
+	  	-i Input single file
+	      or
+	  	-l Input files list
+	  	-p List file path prefix [Optional for -l]
+	      or
+	  	-T (upper) Input OTU count table (\*.OTU.Count)
+
+	[Output options]
+	  	-o Output Path, default is "Result_Plot"
+
+	[Other options]
+	  	-r rRNA copy number correction, T(rue) or F(alse), default is T
+	  	-h Help
+
+Example:
+	

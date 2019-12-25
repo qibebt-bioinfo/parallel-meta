@@ -691,6 +691,12 @@ From version 3.5, some binary file names have been changed for easy understandin
 Previous name|New name|Description
 :------------|:-------|:----------
 PM-class-tax|PM-plot-taxa|taxonomy profile visualization by Krona
-:-----------|:-----------|:--------------------------------------
 PM-class-func|PM-predict-func|function prediction from taxonomy profiles 
+PM-class-func-nsti|PM-predict-func-nsti|NSTI calculation for functional prediction
+PM-taxa-sel|PM-select-taxa|makes OTU/taxa feature tables
+PM-func-sel|PM-select-func|makes functional feature tables
+PM-comp-sam|PM-comp-taxa|calculates similarity/distance among samples by OTU profiles
+PM-comp-sam-func|PM-comp-func|calculates similarity/distance among samples by functional profiles 
+
+# R scripts
 

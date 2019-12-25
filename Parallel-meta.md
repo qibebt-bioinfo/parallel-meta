@@ -69,7 +69,6 @@ a. Extract the package:
 b. Install
 	
 	cd parallel-meta
-
 	source install.sh
 
 ### Tips for the Automatic installation
@@ -129,10 +128,10 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 	Input options:
 		-i Sequence list file, pair-ended sequences are supported [Conflicts with l] (See Sequence format and sequence list)
 		-p List file path prefix [Optional for -i]
-	  or
+	   or
 		-l Taxonomic analysis results list [Conflicts with -i] (See Single_Sample.List)
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
 	
 	Profiling parameters:
@@ -179,7 +178,7 @@ The PM-parallel-meta is the profiling tool for sequences. It accepts single shot
 
 	[Input options, required]
 		-m Input single sequence file (Shotgun) [Conflicts with -r and -R]
-	  or
+	   or
 		-r Input single sequence file (rRNA targeted) [Conflicts with -m]
 		-R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]
 		-P (upper) Pair-end sequence orientation for -R
@@ -213,7 +212,7 @@ The PM-format-seq check the input sequence format (See Sequence format), and try
 	
 	[Input options, required]
 		-i Input single sequence file in FASTA or FASTQ format
-  or
+	   or
 		-l Input sequence files list
 		-p List file path prefix for '-l' [Optional for -l]
 
@@ -267,10 +266,10 @@ The PM-plot-taxa has already been integrated in program PM-parallel-meta.
 
 	[Input options, required]
 		-i Input single file
-	  or
+	   or
 		-l Input files list
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
@@ -301,10 +300,10 @@ The PM-predict-func has already been integrated in program PM-parallel-meta.
 
 	[Input options, required]
 		-i Input single file
-	  or
+	   or
 		-l Input files list
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
@@ -336,10 +335,10 @@ For NSTI (Nearest Sequenced Taxon Index) value calculation of functional analysi
 
 	[Input options, required]
 		-i Input single file
-	  or
+	   or
 		-l Input files list
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
@@ -370,10 +369,10 @@ For evaluation of OTUs to functional profiles.
 
 	[Input options, required]
 		-i Input single file
-	  or
+	   or
 		-l Input files list
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
@@ -402,7 +401,7 @@ Used for multi-sample feature selection (with a specified taxonomical level) bas
 	[Input options, requried]
 		-l Input files list
 		-p List file path prefix for '-l' [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
@@ -440,7 +439,7 @@ For multi-sample feature selection (with a specified KEGG pathway level and rela
 	[Input options, required]
 		-l Input files list [Conflicts with -T and -B]
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input KO Absolute Count table (*.KO.Count) [Conflicts with -l and -B]
 
 	[Output options]
@@ -472,10 +471,10 @@ For multi-sample comparison & similarity (distance) calculation based on the tax
 
 	[Input options, required]
 		-i Two samples path for single sample comparison
-	  or
+	   or
 		-l Input files list for multi-sample comparison
 		-p List files path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count) for multi-sample comparison
 
 	[Output options]
@@ -510,10 +509,10 @@ For multi-sample comparison & similarity (distance) calculation based on the fun
 	
 	[Input options, required]
 		-i Two samples path for single sample comparison
-	  or
+	   or
 		-l Input files list table for multi-sample comparison
 		-p List file path prefix [Optional for -l]
-	  or
+	   or
 		-T (upper) Input KO count table (*.KO.Count) for multi-sample comparison
 	
 	[Output options]
@@ -546,10 +545,10 @@ or
 
 	[Input options, required]
 		-i Input single file name
-	  or
+	   or
 		-l Input files list
 		-p List file path prefix [Optional or -l]
-	  or
+	   or
 		-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
@@ -639,9 +638,9 @@ The PM-split-seq accepts the input sequence in FASTA or FASTQ format, and also i
 	[Input options, required]
 		-i Input sequence file in FASTA or FASTQ format [Required]
 		-b Input barcode file [Conflicts with -g and -q]
-	  or
+	   or
 		-g Input group file [Conflicts with -b and -q]
-	  or
+	   or
 		-q T or F, if the input in QIIME format [Conflicts with -g and -b]
 
 	[Output options]
@@ -669,7 +668,7 @@ Used for taxonomy annotation update to 3.3.1 from 3.0-3.3. Notice that this is n
 
 	[Input options, required]
 		-i Input single file
-	  or
+	   or
 		-l Input files list
 		-p List file path prefix [Optional for -l]
 
@@ -996,9 +995,9 @@ Example:
 
 	SampleID	Habitat		Sex	Host
 	Sample1		Palm		M	H1
-	Sample2	Oral		F	H2
-	Sample3	Gut		M	H1
-	Sample4	Gut		F	H3
+	Sample2		Oral		F	H2
+	Sample3		Gut		M	H1
+	Sample4		Gut		F	H3
 
 ## Single sample profile list format (usually for –l)
 
@@ -1139,4 +1138,4 @@ c. error.log: The warning and error messages.
 
 Any problem please contact Parallel-META development team
 
-	Mr. JING Gongchao E-mail: jinggc@qibebt.ac.cn 
+	Mr. JING Gongchao	E-mail: <jinggc@qibebt.ac.cn>

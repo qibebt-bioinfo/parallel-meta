@@ -388,4 +388,272 @@ Example:
 
 	PM-predict-func-contribute –T Sample.OTU.Count –L ko.list 
 
+## PM-select-taxa: makes OTU/taxa feature tables 
+
+Used for multi-sample feature selection (with a specified taxonomical level) based on the taxonomical profiling results.
+
+**Usage:**
+
+	PM-select-taxa [Option] Value
+
+	Option: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+
+	[Input options, requried]
+		-l Input files list
+		-p List file path prefix for '-l' [Optional for -l]
+	      or
+		-T (upper) Input OTU count table (*.OTU.Count)
+
+	[Output options]
+		-o Output file name, default is "taxaonomy_selection"
+		-L (upper) Taxonomical level (1-6: Phylum - Species, 7: OTU). default is 5
+		-P (upper) Print distribution barchart, T(rue) or F(alse), default is F
+
+	[Other options]
+		-r rRNA copy number correction, T(rue) or F(alse), default is T
+		-q Minimum sequence count threshold, default is 2
+		-m Maximum abundance threshold, default is 0.001 (0.1%)
+		-n Minimum abundance threshold, default is 0.0 (0%)
+		-z Minimum No-Zero abundance threshold, default is 0.1 (10%)
+		-v Minimum average abundance threshold, default is 0.001 (0.1%)
+		-h Help
+
+Example:
+
+	PM-select-taxa –l list.txt –o taxa.txt –L 6
+
+or
+
+	PM-select-taxa –T Sample.OTU.Count –o taxa.txt –L 6
+
+## PM-select-func: makes functional feature tables
+
+For multi-sample feature selection (with a specified KEGG pathway level and relative abundance) based on the functional profiling results.
+
+**Usage:**
+
+	PM-select-func [Option] Value
+
+	Options: 
+	
+	[Input options, required]
+		-l Input files list [Conflicts with -T and -B]
+		-p List file path prefix [Optional for -l]
+	      or
+		-T (upper) Input KO Absolute Count table (*.KO.Count) [Conflicts with -l and -B]
+
+	[Output options]
+	  	-o Output file, default is "functions_category"
+	  	-L (upper) KEGG Pathway level, Level 1, 2, 3 or 4 (KO number), default is 2
+	  	-P (upper) Print distribution barchart, T(rue) or F(alse), default is F
+
+	[Other options]
+	  	-h Help
+
+Example:
+
+	PM-select-func –l list.txt –o func.txt –L 2 
+
+or
+
+	PM-select-func –T Sample.KO.Count –o func.txt –L 2 
+
+## PM-comp-taxa: calculates similarity/distance among samples by OTU profiles
+
+For multi-sample comparison & similarity (distance) calculation based on the taxonomical profiling results
+
+**Usage:**
+
+	PM-comp-taxa [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+
+	[Input options, required]
+	  	-i Two samples path for single sample comparison
+	      or
+	 	-l Input files list for multi-sample comparison
+	  	-p List files path prefix [Optional for -l]
+	      or
+	  	-T (upper) Input OTU count table (*.OTU.Count) for multi-sample comparison
+
+	[Output options]
+	  	-o Output file, default is to output on screen
+	  	-d Output format, distance (T) or similarity (F), default is T
+	  	-P (upper) Print heatmap and clusters, T(rue) or F(alse), default is F
+
+	[Other options]
+	  	-M (upper) Distance Metric, 0: Meta-Storms; 1: Meta-Storms-unweighted; 2: Cosine; 3: Euclidean; 4: Jensen-Shannon; 5: Bray-Curtis, default is 0
+	  	-r rRNA copy number correction, T(rue) or F(alse), default is T
+	  	-c Cluster number, default is 2 [Optional for -P]
+	  	-t Cpu core number, default is auto
+	  	-h Help
+
+Example:
+
+	PM-comp-taxa –l list.txt –o sim_matrix.txt –t 8
+
+or
+
+	PM-comp-taxa –T Sample.OTU.Abd –o sim_matrix –t 8
+
+## PM-comp-func: calculates similarity/distance among samples by functional profiles
+
+For multi-sample comparison & similarity (distance) calculation based on the functional profiling results. 
+
+**Usage:**
+
+	PM-comp-func [Option] Value
+
+	Options: 
+	
+	[Input options, required]
+	  	-i Two samples path for single sample comparison
+	      or
+	  	-l Input files list table for multi-sample comparison
+	  	-p List file path prefix [Optional for -l]
+	      or
+	  	-T (upper) Input KO count table (*.KO.Count) for multi-sample comparison
+	
+	[Output options]
+	  	-o Output file, default is to output on screen
+	  	-d Output format, distance (T) or similarity (F), default is T
+	  	-P (upper) Print heatmap and clusters, T(rue) or F(alse), default is F
+
+	[Other options]
+	  	-M (upper) Distance Metric, 0: Cosine; 1: Euclidean; 2: Jensen-Shannon; 3: Bray-Curtis, default is 0
+	  	-c Cluster number, default is 2 [Optional for -P]
+	  	-t Cpu core number, default is auto
+	  	-h Help
+
+Example:
+
+	PM-comp-func –l list.txt –o sim_matrix.txt –t 8 
+
+or
+
+	PM-comp-func –T Sample.KO.Abd –o sim_matrix.txt –t 8 
+
+## PM-rand-rare: rarefy samples by taxonomy profiles 
+
+**Usage:**
+
+	PM-rand-rare [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+
+	[Input options, required]
+	  	-i Input single file name
+	      or
+	 	-l Input files list
+	  	-p List file path prefix [Optional or -l]
+	      or
+	  	-T (upper) Input OTU count table (*.OTU.Count)
+
+	[Output options]
+	  	-o Output path (for -i and -l) or output table name (for -T), default is "Rare_Out"
+	  	-L (upper) If output list, T(rue) or F(alse), default is T [optional for -l]
+
+	[Other options]
+	  	-s Rarefaction depth [Required]
+	  	-b Bootstrap for sequence number normalization, default is 200, maximum is 1000
+	  	-h Help
+
+Example:
+
+	PM-rand-rare –i taxa.Count –o taxa.rare.Count –s 1000
+
+## PM-rare-curv: plots the rarefaction curves by OTU table
+
+Used for rarefaction analysis and rarefaction curves printing to pdf format. 
+
+**Usage:**
+
+	PM-rare-curv [Option] Value
+
+	Options: 
+
+	[Input options, required]
+	  	-i or -T (upper) Input feature count table (*.OTU.Count)
+
+	[Output options]
+	  	-o Output file directory, default is "result"
+	  	-p Prefix name of output, default is "out"
+
+	[Other options]
+	  	-b The bootstrap value, default is 20
+	  	-s The rarefaction step, default is 100
+	  	-l The rarefaction curve label, T is enable and F is disable, default is F
+	  	-t Cpu core number, default is auto
+	  	-h Help
+
+Example:
+
+	PM-rare-curv –i taxa.Count –o rare-out –b 20 
+
+## PM-comp-corr: calculates the correlation among OTUs
+
+Used for correlation calculation of taxonomical and functional distribution with meta-data. 
+
+The PM-comp-corr accepts the results of PM-select-taxa and PM-select-func.
+
+**Usage:**
+
+	PM-comp-corr [Option] Value
+
+	Options: 
+	
+	[Input options, required]
+	  	-i or -T (upper) Input feature table file (*.Abd)
+	  	-m Meta data name [Optional]
+	  	-c Selected feature, separated by "," [Optional for -m]
+
+	[Output options]
+	  	-o Output prefix, default is "corr_matrix"
+
+	[Other options]
+	  	-f 0:(Spearman) or 1:(Pearson) metrics,default is 0
+	  	-N (upper) Network based co-occurrence analysis, T(rue) or F(alse), default is F
+	  	-G (upper) Netowrk analysis threshold, default is 0.5
+	  	-t Cpu core number, default is auto
+	  	-h Help
+
+Example:
+
+	PM-comp-corr –i taxa.txt –o taxa.network.txt
+
+## PM-split-seq: split sequences by sample 
+
+Used for sequence split by barcode or group information (Mothur format). 
+
+The PM-split-seq accepts the input sequence in FASTA or FASTQ format, and also is compatible with QIIME format FASTQ files.
+
+**Usage:**
+
+	PM-split-seq [Option] Value
+
+	Options: 
+	
+	[Input options, required]
+	  	-i Input sequence file in FASTA or FASTQ format [Required]
+	  	-b Input barcode file [Conflicts with -g and -q]
+	      or
+	  	-g Input group file [Conflicts with -b and -q]
+	      or
+	  	-q T or F, if the input in QIIME format [Conflicts with -g and -b]
+
+	[Output options]
+	  	-o Result output path, default is "Out"
+
+	[Other options]
+	  	-h Help
+
+Example:
+
+	PM-split-seq –i seq.fa –b barcode.txt –o seq.out	
+	PM-split-seq –i seq.fa –g seq.groups –o seq.out
+	PM-split-seq –i seq.fa –q T –o seq.out
+
 

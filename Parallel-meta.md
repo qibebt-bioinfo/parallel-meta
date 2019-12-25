@@ -34,7 +34,7 @@ Parallel-META 3 source code package is also available for building and installat
 
 OpenMP library is the C/C++ parallel computing library. Most Linux releases have OpenMP already been installed in the system. In Mac OS X, to install the compiler that supports OpenMP, we recommend using the Homebrew package manager:
 
-*brew install gcc*
+	brew install gcc
 
 ## Rscript environment 
 
@@ -64,13 +64,13 @@ Now the Parallel-META provides a fully automatic installer for easy installation
 
 a. Extract the package: 
 
-	*tar –xzvf parallel-meta-3.tar.gz*
+	tar –xzvf parallel-meta-3.tar.gz
 
 b. Install
 	
-	*cd parallel-meta*
+	cd parallel-meta
 
-	*source install.sh*
+	source install.sh
 
 ### Tips for the Automatic installation
 
@@ -84,22 +84,22 @@ If the automatic installer failed, Parallel-META 3 can still be installed manual
 
 a. Extract the package:
 
-	*tar –xzvf parallel-meta-3.tar.gz*
+	tar –xzvf parallel-meta-3.tar.gz
 
 b. Configure the environment variables (default environment variable configuration file is located at “~/.bashrc” or “~/.bash_profile”) 
 
-	*export ParallelMETA=Path to Parallel-META 3*
-	*export PATH=”$PATH:$ParallelMETA/bin” 
-	*source ~/.bashrc*
+	export ParallelMETA=Path to Parallel-META 3
+	export PATH=”$PATH:$ParallelMETA/bin”
+	source ~/.bashrc
 
 c. Install R packages
 	
-	*Rscript $ParallelMETA/Rscript/config.R*
+	Rscript $ParallelMETA/Rscript/config.R
 
 d. Compile the source code* (only required by the source code package): 
 
-	*cd parallel-meta*
-	*make*
+	cd parallel-meta
+	make
 
 # Notice before start to use
 

@@ -690,7 +690,7 @@ From version 3.5, some binary file names have been changed for easy understandin
 
 Previous name|New name|Description
 :------------|:-------|:----------
-*PM-class-tax|*PM-plot-taxa|taxonomy profile visualization by Krona
-:------------|:------------|:--------------------------------------
-
+PM-class-tax|PM-plot-taxa|taxonomy profile visualization by Krona
+:-----------|:-----------|:--------------------------------------
+PM-class-func|PM-predict-func|function prediction from taxonomy profiles 
 

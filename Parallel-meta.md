@@ -656,4 +656,41 @@ Example:
 	PM-split-seq –i seq.fa –g seq.groups –o seq.out
 	PM-split-seq –i seq.fa –q T –o seq.out
 
+## PM-update-taxa: update the taxonomy annotation to latest version 
+
+Used for taxonomy annotation update to 3.3.1 from 3.0-3.3. Notice that this is not compatible with version 2.X or lower.
+
+**Usage:**
+
+	PM-update-taxa [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+
+	[Input options, required]
+	  	-i Input single file
+	      or
+	  	-l Input files list
+	  	-p List file path prefix [Optional for -l]
+
+	[Other options]
+	  	-h Help
+
+Example:
+
+	PM-update-tax –l list.txt
+
+in which “list.txt” is the path of N samples’ taxonomical analysis results, and each sample in one line (see Sample list format).
+
+The PM-update-taxa will replace the previous analysis results in “classification.txt”, and backup previous file named “classification.txt.bk”. This update will significantly improve the taxonomy annotation on Genus level, so we strongly command to re-run the pipeline. This update will not affect the results of functional analysis.
+
+# Name change of tools 
+
+From version 3.5, some binary file names have been changed for easy understanding:
+
+Previous name|New name|Description
+:------------|:-------|:----------
+*PM-class-tax|*PM-plot-taxa|taxonomy profile visualization by Krona
+:------------|:------------|:--------------------------------------
+
 

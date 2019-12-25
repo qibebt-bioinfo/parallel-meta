@@ -124,7 +124,6 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 
 	[Options]:
 		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) 
-		
 		-m Meta data file [Required] (See Meta-data format)
 		
 	Input options:
@@ -135,6 +134,7 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 		-p List file path prefix [Optional for -l]
 	or
 		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
+	
 	Profiling parameters:
 		-M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F
 		-e Alignment mode, 0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3
@@ -143,6 +143,7 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 		-a rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [optional for -M T]
 		-k Sequence format check, T(rue) or F(alse), default is F
 		-f Functional analysis, T(rue) or F(alse), default is T
+	
 	Statistic parameters:
 		-L (upper) Taxonomical levels (1-6: Phylum - Species). Multiple levels are accepted
 		-w Taxonomical distance type, 0: weighted, 1: unweigthed, 2: both, default is 2
@@ -153,6 +154,7 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 		-E (upper) If the samples are paired, T(rue) or F(alse), default is F
 		-C (upper) Cluter number, default is 2
 		-G (upper) Network analysis edge threshold, default is 0.5
+	
 	Other options:
 		-t cpu core number, default is auto
 		-h Help

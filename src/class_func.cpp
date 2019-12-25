@@ -1,4 +1,4 @@
-// Updated at Aug 21, 2019
+// Updated at Dec 23, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 
@@ -125,8 +125,13 @@ int Parse_Para(int argc, char * argv[]){
         exit(0);
         }
         
-    if (Is_out_list) Outlistfile = Out_path + "/func.list";
-    
+    if (Is_out_list) {
+	if(Out_path[Out_path.size()-1] != '/')
+	        Outlistfile = Out_path + ".list";
+ 	else
+        	Outlistfile = Out_path.substr(0, Out_path.size()-1) + ".list";
+    }
+
     int max_core_number = sysconf(_SC_NPROCESSORS_CONF);
     
     if ((Coren <= 0) || (Coren > max_core_number)){

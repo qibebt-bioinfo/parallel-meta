@@ -1,4 +1,4 @@
-// Updated at Dec 26, 2018
+// Updated at Dec 16, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -62,7 +62,7 @@ int printhelp(){
     cout << "\t  -P (upper) Print heatmap and clusters, T(rue) or F(alse), default is F" << endl;
     
     cout << "\t[Other options]" << endl;
-    cout << "\t  -M (upper) Distance Metric, 0: Cosine; 1: Euclidean; 2: Jensen-Shannon, default is 0" << endl;
+    cout << "\t  -M (upper) Distance Metric, 0: Cosine; 1: Euclidean; 2: Jensen-Shannon; 3: Bray-Curtis, default is 0" << endl;
     cout << "\t  -c Cluster number, default is 2 [Optional for -P]" << endl;
     cout << "\t  -t Cpu core number, default is auto" << endl;
     cout << "\t  -h Help" << endl;
@@ -114,8 +114,8 @@ int Parse_Para(int argc, char * argv[]){
         i+=2;
     	}
 
-	if ((Dist_metric > 1) || (Dist_metric < 0)){
-	    cerr << "Warning: Distance metric (-M) must be 0 or 1, change to default (0)" << endl;
+	if ((Dist_metric > 3) || (Dist_metric < 0)){
+	    cerr << "Warning: Distance metric (-M) must be 0 or 1 or 2 or 3, change to default (0)" << endl;
 	    Dist_metric = 0;
 	    }     
     int max_core_number = sysconf(_SC_NPROCESSORS_CONF);

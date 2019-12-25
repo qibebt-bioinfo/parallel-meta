@@ -1,4 +1,4 @@
-// Updated at Sept 27, 2019
+// Updated at Dec 23, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // _OTU_Parser
@@ -136,12 +136,15 @@ int Parse_Para(int argc, char * argv[]){
     
     if ((Mode == 0) || (Mode == 1)){
        Check_Path(Outpath.c_str(), 1);
-       if (Is_out_list) Outlistfile = Outpath + "/taxa_rare.list";
+       if (Is_out_list) {
+		if(Outpath[Outpath.size()-1] != '/')
+	                Outlistfile = Outpath + ".list";
+        	else
+                	Outlistfile = Outpath.substr(0, Outpath.size()-1) + ".list";
+	}
+       if (Mode == 1) //list
+       		Load_List(Listfile.c_str(), Infilename, Sam_name, Listprefix);
        }
-    
-    if (Mode == 1) //list
-       Load_List(Listfile.c_str(), Infilename, Sam_name, Listprefix);
-    
     return 0;
     }
 

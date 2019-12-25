@@ -1,4 +1,4 @@
-// Updated at Dec 26, 2018
+// Updated at Dec 23, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -116,6 +116,7 @@ float _Comp_Tree_Func::Calc_sim(float * abd_m, float * abd_n, int mode){
              
              case 1: return 1.0 - Calc_Dist_E(abd_m, abd_n, GeneN); break;
              case 2: return 1.0 - Calc_Dist_JSD(abd_m, abd_n, GeneN); break;
+	     case 3: return 1.0 - Calc_Dist_Bray_Curtis(abd_m, abd_n, GeneN); break;
              default: 
              case 0: return 1.0 - Calc_Dist_Cos(abd_m, abd_n, GeneN); break;
              }

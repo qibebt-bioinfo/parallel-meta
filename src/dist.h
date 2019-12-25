@@ -111,4 +111,45 @@ float Calc_Dist_JSD(float * abd_m, float * abd_n, int dim){
           
       return (dkl_m + dkl_n)/2.0;
       }
+
+float Calc_Dist_Bray_Curtis(float * abd_m, float * abd_n, int dim){
+
+      float abd_m_norm[dim];
+      float abd_n_norm[dim];
+
+      float sum_m = 0;
+      float sum_n = 0;
+
+      //Norm
+      for (int i = 0; i < dim; i ++){
+
+          abd_m_norm[i] = abd_m[i];
+          abd_n_norm[i] = abd_n[i];
+
+          sum_m += abd_m_norm[i];
+          sum_n += abd_n_norm[i];
+          }
+
+      if (sum_m <= 0) return 1;
+      if (sum_n <= 0) return 1;
+
+      for (int i = 0; i < dim; i ++){
+          abd_m_norm[i] /= sum_m;
+          abd_n_norm[i] /= sum_n;
+          }
+
+      float sum = 0;
+      float diff = 0;
+
+      for (int i = 0; i < dim; i ++){
+          sum += (abd_m_norm[i] + abd_n_norm[i]);
+          float a_diff = abd_m_norm[i] - abd_n_norm[i];
+          if (a_diff < 0) a_diff = a_diff * (-1.0);
+          diff += a_diff;
+          }
+      if (sum <= 0) return 1;
+      return diff / sum;
+      }
+
+
 #endif

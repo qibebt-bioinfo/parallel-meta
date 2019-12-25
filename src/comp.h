@@ -1,4 +1,4 @@
-// Updated at Aug 21, 2019
+// Updated at Dec 23, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -257,7 +257,7 @@ float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2, bool w){
       
       }
 
-float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2, int mode){ //0: MS; 1: Unweighted MS; 2: Cos; 3: Eu; 4: JSD
+float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2, int mode){ //0: MS; 1: Unweighted MS; 2: Cos; 3: Eu; 4: JSD; 5: Bray Curtis
       
       if (!Database.Get_Is_Tree()){
                                    if (mode < 2) mode = 4; //for no tree, default is 4: JSD
@@ -268,7 +268,8 @@ float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2, int mode){ //0: MS; 1: 
              case 1: return Calc_sim_unweight(Abd_1, Abd_2); break;
              case 2: return 1.0 - Calc_Dist_Cos(Abd_1, Abd_2, LeafN); break;
              case 3: return 1.0 - Calc_Dist_E(Abd_1, Abd_2, LeafN); break;
-             case 4: 
+             case 4: return 1.0 - Calc_Dist_JSD(Abd_1, Abd_2, LeafN); break;
+	     case 5: return 1.0 - Calc_Dist_Bray_Curtis(Abd_1, Abd_2, LeafN); break;
              default: return 1.0 - Calc_Dist_JSD(Abd_1, Abd_2, LeafN); break;
              }
       return 0;

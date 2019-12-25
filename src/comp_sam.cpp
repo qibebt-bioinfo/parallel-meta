@@ -1,4 +1,4 @@
-// Updated at Aug 21, 2019
+// Updated at Dec 23, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -37,7 +37,7 @@ bool Is_heatmap;
 int Cluster = 2;
 
 //bool Is_weight;
-int Dist_metric = 0; //0: MS; 1: MS-uw; 2: cos 3: eu; 4: JSD
+int Dist_metric = 0; //0: MS; 1: MS-uw; 2: cos 3: eu; 4: JSD; 5.Bray Curtis
 
 int Mode = 0; //0: single, 1: multi_list, 2: multi_table
 //bool Reversed_table = true;
@@ -67,7 +67,7 @@ int printhelp(){
     
     cout << "\t[Other options]" << endl;
     //cout << "\t  -w weighted or unweighted, T(rue) or F(alse), default is T" << endl;
-    cout << "\t  -M (upper) Distance Metric, 0: Meta-Storms; 1: Meta-Storms-unweighted; 2: Cosine; 3: Euclidean; 4: Jensen-Shannon, default is 0" << endl;
+    cout << "\t  -M (upper) Distance Metric, 0: Meta-Storms; 1: Meta-Storms-unweighted; 2: Cosine; 3: Euclidean; 4: Jensen-Shannon; 5: Bray-Curtis, default is 0" << endl;
     cout << "\t  -r rRNA copy number correction, T(rue) or F(alse), default is T" << endl;
     cout << "\t  -c Cluster number, default is 2 [Optional for -P]" << endl;
     cout << "\t  -t Cpu core number, default is auto" << endl;

@@ -106,4 +106,63 @@ d. Compile the source code* (only required by the source code package):
 1. The output path should NOT be the same path as the input file for the output path will be CLEARED initially. Make sure Parallel-META 3 has the write permission of the output path.
 2. We strongly recommend to read this manually carefully before use ParallelMETA 3. 
 
-# Tools in toolkit 
+# Tools in toolkit
+
+Tools can be directly used as Linux command line with parameters. To see all available parameters, please run the command with parameter ‘-h’, eg. 
+
+	PM-pipeline –h 
+
+## PM-pipeline: automatic pipeline 
+
+The PM-pipeline is an integrated automatic pipeline for multiple sample analysis with most process steps in Parallel-META 3. This analysis can either start from sequence (by –i) or start from profile results (by
+-l for sample list,
+-T for OTU table). 
+
+**Usage:**
+
+	PM-pipeline [Option] value
+
+	[Options]:
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) 
+		
+		-m Meta data file [Required] (See Meta-data format)
+		
+	Input options:
+		-i Sequence list file, pair-ended sequences are supported [Conflicts with l] (See Sequence format and sequence list)
+		-p List file path prefix [Optional for -i]
+	or 
+		-l Taxonomic analysis results list [Conflicts with -i] (See Single_Sample.List)
+		-p List file path prefix [Optional for -l]
+	or
+		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
+	Profiling parameters:
+		-M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F
+		-e Alignment mode, 0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3
+		-P (upper) Pair-end sequence orientation, 0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0
+		-r rRNA copy number correction, T(rue) or F(alse), default is T
+		-a rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [optional for -M T]
+		-k Sequence format check, T(rue) or F(alse), default is F
+		-f Functional analysis, T(rue) or F(alse), default is T
+	Statistic parameters:
+		-L (upper) Taxonomical levels (1-6: Phylum - Species). Multiple levels are accepted
+		-w Taxonomical distance type, 0: weighted, 1: unweigthed, 2: both, default is 2
+		-F (upper) Functional levels (Level 1, 2, 3 or 4 (KO number)). Multiple levels are accepted
+		-s Sequence number normalization depth, 0 is disabled, default is disable
+		-b Bootstrap for sequence number normalization, default is 200, maximum is 1000
+		-R (upper) Rarefaction curve, T(rue) or F(alse), default is F
+		-E (upper) If the samples are paired, T(rue) or F(alse), default is F
+		-C (upper) Cluter number, default is 2
+		-G (upper) Network analysis edge threshold, default is 0.5
+	Other options:
+		-t cpu core number, default is auto
+		-h Help
+		
+Notice:
+1. Pair-ended sequences are supported for 16S rRNA sequences (See Sequence format and sequence list).
+2. Samples (pairs) should be in the same order in all lists and meta-data.
+3. In Meta data file, sample IDs should not be started with number, and should not contain space symbol (‘ ‘) and table symbol (‘\t’) (See Meta-data format).
+4. Rarefaction curve is disabled in default setting, use “–R T” to enable (might be slow).
+5. Sequence number normalization is disabled in default setting, use “-s” to enable and set the normalization depth (might drop samples with sequence number less than the setting depth). 
+
+## PM-parallel-meta: sequence profiling 
+

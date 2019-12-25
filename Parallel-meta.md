@@ -1138,4 +1138,4 @@ c. error.log: The warning and error messages.
 
 Any problem please contact Parallel-META development team
 
-	Mr. JING Gongchao	E-mail: <jinggc@qibebt.ac.cn>
+	Mr. JING Gongchao	E-mail: jinggc@qibebt.ac.cn

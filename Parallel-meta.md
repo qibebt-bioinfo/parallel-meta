@@ -34,7 +34,7 @@ Parallel-META 3 source code package is also available for building and installat
 
 OpenMP library is the C/C++ parallel computing library. Most Linux releases have OpenMP already been installed in the system. In Mac OS X, to install the compiler that supports OpenMP, we recommend using the Homebrew package manager:
 
-	*brew install gcc*
+	* brew install gcc *
 
 ## Rscript environment 
 

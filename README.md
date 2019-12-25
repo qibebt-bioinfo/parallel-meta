@@ -1,7 +1,7 @@
 # Parallel-META 3
 
-![Version](https://img.shields.io/badge/Version-3.5.2-brightgreen)
-![Release date](https://img.shields.io/badge/Release%20date-Sep.%2027%2C%202019-brightgreen)
+![Version](https://img.shields.io/badge/Version-3.5.3-brightgreen)
+![Release date](https://img.shields.io/badge/Release%20date-Dec.%2025%2C%202019-brightgreen)
 
 
 

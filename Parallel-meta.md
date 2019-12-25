@@ -221,6 +221,7 @@ The PM-format-seq check the input sequence format (See Sequence format), and try
 	  	-h Help
 
 Example:
+
 	PM-format-seq –i sample.fasta
 
 or
@@ -251,6 +252,7 @@ The PM-extract-rna can extract 16S & 18S rRNA fragments from shotgun sequences. 
 
 
 Example:
+
 	PM-extract-rna –m examples/meta.fasta –o metaresults –e 1e-20 –l 150 
 
 ## PM-plot-taxa: taxonomy profile visualization by Krona
@@ -269,7 +271,7 @@ The PM-plot-taxa has already been integrated in program PM-parallel-meta.
 	  	-l Input files list
 	  	-p List file path prefix [Optional for -l]
 	      or
-	  	-T (upper) Input OTU count table (\*.OTU.Count)
+	  	-T (upper) Input OTU count table (*.OTU.Count)
 
 	[Output options]
 	  	-o Output Path, default is "Result_Plot"
@@ -279,4 +281,111 @@ The PM-plot-taxa has already been integrated in program PM-parallel-meta.
 	  	-h Help
 
 Example:
+
+	PM-plot-taxa –l list.txt –o result_plot
+
+or
+
+	PM-plot-taxa –T Sample.OTU.Abd –o result_plot 
+
+## PM-predict-func: function prediction from taxonomy profiles 
+
+The PM-predict-func has already been integrated in program PM-parallel-meta.  
+
+**Usage:**
+
+	PM-predict-func [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+
+	[Input options, required]
+		-i Input single file
+	      or
+		-l Input files list
+		-p List file path prefix [Optional for -l]
+	      or
+		-T (upper) Input OTU count table (*.OTU.Count)
+
+	[Output options]
+		-o Output path, default is "Results_Func"
+		-L (upper) If output list (at "Output_path/func.list"), T(rue) or F(alse), default is T [optional for -l]
+
+	[Other options]
+		-t Cpu core number, default is auto
+	 	-h Help
+
+Example:
+
+	PM-predict-func –l list.txt –o result_func 
+
+or
+
+	PM-predict-func –T Sample.OTU.Count –o result_func
+
+## PM-predict-func-nsti: NSTI calculation for functional prediction
+
+For NSTI (Nearest Sequenced Taxon Index) value calculation of functional analysis. The PM-predict-func-nsti has already been integrated in program PMparallel-meta.
+
+**Usage:**
+
+	PM-predict-func-nsti [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+
+	[Input options, required]
+		-i Input single file
+	      or
+		-l Input files list
+		-p List file path prefix [Optional for -l]
+	      or
+		-T (upper) Input OTU count table (*.OTU.Count)
+
+	[Output options]
+		-o Output file, default is "NSTI.out"
 	
+	[Other options]
+		-t Cpu core number, default is auto
+		-h Help
+
+Example:
+
+	PM-predict-func-nsti –l list.txt –o result_func 
+
+or
+
+	PM-predict-func-nsti –T Sample.OTU.Count –o result_func
+
+## PM-predict-func-contribute: contribution evaluation of OTUs for functional profiles (new) 
+
+For evaluation of OTUs to functional profiles.
+
+**Usage:**
+
+	PM-predict-func-contribute [Option] Value
+
+	Options: 
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+
+	[Input options, required]
+		-i Input single file
+	      or
+		-l Input files list
+		-p List file path prefix [Optional for -l]
+	      or
+		-T (upper) Input OTU count table (*.OTU.Count)
+
+	[Output options]
+		-L (upper) Selected KO list
+		-o Output file name, default is "func.KO.contribute"
+
+	[Other options]
+		-t Cpu core number, default is auto
+		-h Help
+
+Example:
+
+	PM-predict-func-contribute –T Sample.OTU.Count –L ko.list 
+
+

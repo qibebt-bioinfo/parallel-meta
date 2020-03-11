@@ -1,3 +1,7 @@
+//Updated at Mar 11, 2020
+//Updated by X. Su
+//Added Bray-Curits dist
+
 #ifndef DIST_H
 #define DIST_H
 
@@ -49,6 +53,9 @@ float Calc_Dist_E(float * abd_m, float * abd_n, int dim){
           sum_m += abd_m_norm[i];
           sum_n += abd_n_norm[i];          
           }
+      
+      if (sum_m <= 0) return 1;
+      if (sum_n <= 0) return 1;
       
       for (int i = 0; i < dim; i ++){
           abd_m_norm[i] /= sum_m;
@@ -109,30 +116,30 @@ float Calc_Dist_JSD(float * abd_m, float * abd_n, int dim){
           //cout  << dkl_m << "\t" << dkl_n << endl;
           }
           
-      return (dkl_m + dkl_n)/2.0;
+      return sqrt((dkl_m + dkl_n)/2.0);
       }
 
 float Calc_Dist_Bray_Curtis(float * abd_m, float * abd_n, int dim){
-
+      
       float abd_m_norm[dim];
       float abd_n_norm[dim];
-
+      
       float sum_m = 0;
       float sum_n = 0;
-
+      
       //Norm
       for (int i = 0; i < dim; i ++){
-
+          
           abd_m_norm[i] = abd_m[i];
           abd_n_norm[i] = abd_n[i];
-
+          
           sum_m += abd_m_norm[i];
-          sum_n += abd_n_norm[i];
+          sum_n += abd_n_norm[i];          
           }
-
+      
       if (sum_m <= 0) return 1;
       if (sum_n <= 0) return 1;
-
+      
       for (int i = 0; i < dim; i ++){
           abd_m_norm[i] /= sum_m;
           abd_n_norm[i] /= sum_n;
@@ -140,7 +147,7 @@ float Calc_Dist_Bray_Curtis(float * abd_m, float * abd_n, int dim){
 
       float sum = 0;
       float diff = 0;
-
+            
       for (int i = 0; i < dim; i ++){
           sum += (abd_m_norm[i] + abd_n_norm[i]);
           float a_diff = abd_m_norm[i] - abd_n_norm[i];
@@ -150,6 +157,5 @@ float Calc_Dist_Bray_Curtis(float * abd_m, float * abd_n, int dim){
       if (sum <= 0) return 1;
       return diff / sum;
       }
-
 
 #endif

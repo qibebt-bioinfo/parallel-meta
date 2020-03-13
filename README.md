@@ -105,4 +105,4 @@ make
 ```
 
 # Citation
-Jing, G., Sun, Z., Wang, H., Gong, Y., Huang, S., Ning, K, Xu, J., & Su, X. Parallel-META 3: Comprehensive taxonomical and functional analysis platform for efficient comparison of microbial communities. *Scientific Reports*, 2017
+G. Jing, Z. Sun, H. Wang, Y. Gong, S. Huang, K. Ning, J. Xu, X. Su*. Parallel-META 3: Comprehensive taxonomical and functional analysis platform for efficient comparison of microbial communities. *Scientific Reports*, 2017

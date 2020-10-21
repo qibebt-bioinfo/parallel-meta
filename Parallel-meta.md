@@ -1,7 +1,7 @@
 # Parallel-META 3 users’ manual
 
-![Version](https://img.shields.io/badge/Version-3.5.3-brightgreen)
-![Release date](https://img.shields.io/badge/Release%20date-Dec.%2025%2C%202019-brightgreen)
+![Version](https://img.shields.io/badge/Version-3.5.4-brightgreen)
+![Release date](https://img.shields.io/badge/Release%20date-Oct.%2021%2C%202020-brightgreen)
 
 
 # Introduction
@@ -74,7 +74,7 @@ b. Install
 ### Tips for the Automatic installation
 
 1. Please “cd parallel-meta” directory before run the automatic installer.
-2. The automatic installer only configures the environment variables to the default configuration files of “~/.bashrc” or “~/.bash_profile”. If you want to configure the environment variables to other configuration file please use the manual installation.
+2. The automatic installer only configures the environment variables to the default configuration files of “\~/.bashrc” or “\~/.bash_profile”. If you want to configure the environment variables to other configuration file please use the manual installation.
 3. If the automatic installer failed, Parallel-META 3 can still be installed manually by the following steps.
 
 ## Manual installation
@@ -85,7 +85,7 @@ a. Extract the package:
 
 	tar –xzvf parallel-meta-3.tar.gz
 
-b. Configure the environment variables (default environment variable configuration file is located at “~/.bashrc” or “~/.bash_profile”)
+b. Configure the environment variables (default environment variable configuration file is located at “\~/.bashrc” or “\~/.bash_profile”)
 
 	export ParallelMETA=Path to Parallel-META 3
 	export PATH=”$PATH:$ParallelMETA/bin”

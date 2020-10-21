@@ -2,12 +2,12 @@
 # Function: PCoA
 # Call: Rscript PM_pcoa.R -m meta_data -d dist_file [-l T/F -o outfile -a axesfile]
 # R packages used: optparse vegan ggplot2 grid
-# Update: 2017-05-10,Zheng Sun, Yanhai Gong, Xiaoquan Su
-# Last update: 2018-5-11, Wang Honglei, Xiaoquan Su
+# Update: 2017-05-10, Zheng Sun, Yanhai Gong, Xiaoquan Su
+# Last update: 2020-10-18, Wang Honglei, Xiaoquan Su, Yufeng Zhang
 #################################################################
 
 ## install necessary libraries
-p <- c("optparse","vegan","ggplot2","grid")
+p <- c("optparse","vegan", "ade4","ggplot2","grid")
 usePackage <- function(p) {
   if (!is.element(p, installed.packages()[,1]))
     install.packages(p, dep=TRUE, repos="http://cran.us.r-project.org/")
@@ -46,7 +46,7 @@ meta_orig <- read.table(file=opts$meta_data, header=TRUE, row.names=1)
 dst_orig <- read.table(file=opts$dist_file, header=TRUE, row.names=1)
 
 ## main calc & draw function definition
-PM_pcoa <- function(da, md, method="bray") {
+PM_pcoa <- function(da, md) {
   rn <- rownames(da)
   cn <- colnames(da)
   
@@ -54,14 +54,14 @@ PM_pcoa <- function(da, md, method="bray") {
   n <- ncol(meta)
   
   sampleNumber <- length(rn)
+
+  dst <- as.dist(da)
+  pcoa <- dudi.pco(dst, scan=FALSE, nf=3)
+  #print(pcoa$li)
+  loadings <- signif((pcoa$eig)[1:3] / sum(pcoa$eig)*100, digits=3)
   
-  #da.bray <- vegdist(da, method=method)
-  da.bray <- da
-  da.b.pcoa <- cmdscale(da.bray, k=3, eig=TRUE, add=TRUE)
-  
-  colnames(da.b.pcoa$points)<-c("PC1","PC2","PC3")
-  data<-as.data.frame(da.b.pcoa$points)
-  loadings <- signif(da.b.pcoa$eig/sum(da.b.pcoa$eig)*100, digits=3)
+  colnames(pcoa$li)<-c("PC1","PC2","PC3")
+  data<-as.data.frame(pcoa$li)
   
   # write axes file
   write.table(data,file=axesfile,sep="\t",quote=FALSE,col.names=NA)

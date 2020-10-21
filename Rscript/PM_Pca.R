@@ -3,11 +3,11 @@
 # Call: Rscript PM_pca.R -m meta_data -i abund_file [-l T/F -o outfile -a axesfile]
 # R packages used: optparse vegan ggplot2 grid
 # Update: 2016-09-22,Zheng Sun, Yanhai Gong, Xiaoquan Su
-# Last update: 2018-5-11, Wang Honglei, Xiaoquan Su
+# Last update: 2020-10-18, Wang Honglei, Xiaoquan Su, Yufeng Zhang
 #################################################################
 
 ## install necessary libraries
-p <- c("optparse","vegan","ggplot2","grid")
+p <- c("optparse","vegan","ade4","ggplot2","grid")
 usePackage <- function(p) {
   if (!is.element(p, installed.packages()[,1]))
     install.packages(p, dep=TRUE, repos="http://cran.us.r-project.org/")
@@ -57,10 +57,11 @@ PM_pca <- function(da, md) {
   sampleNumber <- length(rn)
   
   da.dist <- vegdist(da,method="euclidean")
-  da.b.pca <- cmdscale(da.dist, k=3, eig=TRUE, add=TRUE)
-  
-  colnames(da.b.pca$points)<-c("PC1","PC2","PC3")
-  data<-as.data.frame(da.b.pca$points)
+  da.b.pca <- dudi.pco(da.dist, scan = FALSE, nf = 3)
+  #print(da.b.pca)
+  #print(da.b.pca$li)
+  colnames(da.b.pca$li)<-c("PC1","PC2","PC3")
+  data<-as.data.frame(da.b.pca$li)
   loadings <- signif(da.b.pca$eig/sum(da.b.pca$eig)*100, digits=3)
   
   # write axes file

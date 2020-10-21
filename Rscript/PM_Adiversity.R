@@ -3,8 +3,8 @@
 # Call: Rscript PM_ADiversity.R -i taxa.abd -m metadata -o outfile
 # R packages used: optparse,vegan fossil abind
 # Authors: Zheng Sun, Xiaoquan Su
-# Last update: 2017-02-24, Zheng Sun, Xiaoquan Su
-# Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
+# Last update: 2020-10-18, Zheng Sun, Xiaoquan Su
+# Bioinformatics Group, College of Computer Science & Technology, Qingdao University
 #################################################################
 
 # install necessary libraries
@@ -105,7 +105,7 @@ for (i in 2:ncol(data_map)) {
   #                                    ggplot(tempframe_shannon,aes(y=shan,x=dv,fill=dv))+geom_boxplot()+theme_bw()+guides(fill=FALSE)+annotate("text",x=-Inf,y=Inf,label=paste("P=",round(mt,digits=4)),hjust=-.2,vjust=2)+xlab(colnames(data_map)[i])+ylab("Shannon")
   detach(tempframe_shannon)
   } 
-  if (is.factor(data_map[1,i])==F){tempframe_shannon=data.frame(shan=c(indexes[,1]),dv=as.factor(data_map[,i]))
+  if (is.factor(data_map[1,i])==F){tempframe_shannon=data.frame(shan=c(indexes[,1]),dv=data_map[,i])
   attach(tempframe_shannon)
   suppressWarnings(corr <- cor.test(c(shan),c(dv),method = "pearson"))
   plot(shan,dv,pch=19,col=rgb(0,0,100,50,maxColorValue=255),ylab= colnames(data_map)[i],xlab="Shannon",main=paste("R=",round(corr$estimate,digits=4)," p=",round(corr$p.value,digits=4)))
@@ -125,7 +125,7 @@ for (i in 2:ncol(data_map)) {
   #                                    ggplot(tempframe_simpson,aes(y=simpt,x=dv,fill=dv))+geom_boxplot()+theme_bw()+guides(fill=FALSE)+annotate("text",x=-Inf,y=Inf,label=paste("P=",round(mt,digits=4)),hjust=-.2,vjust=2)+xlab(colnames(data_map)[2])+ylab("Simpson")
   detach(tempframe_simpson)
   }
-  if (is.factor(data_map[1,i])==F){tempframe_simpson=data.frame(shan=c(indexes[,2]),dv=as.factor(data_map[,i]))
+  if (is.factor(data_map[1,i])==F){tempframe_simpson=data.frame(shan=c(indexes[,2]),dv=data_map[,i])
   attach(tempframe_simpson)
   suppressWarnings(corr <- cor.test(c(shan),c(dv),method = "pearson"))
   plot(shan,dv,pch=19,col=rgb(0,0,100,50,maxColorValue=255),ylab= colnames(data_map)[i],xlab="Simpson",main=paste("R=",round(corr$estimate,digits=4)," p=",round(corr$p.value,digits=4)))
@@ -145,7 +145,7 @@ for (i in 2:ncol(data_map)) {
   #                                    ggplot(tempframe_chaoooo,aes(y=chaot,x=dv,fill=dv))+geom_boxplot()+theme_bw()+guides(fill=FALSE)+annotate("text",x=-Inf,y=Inf,label=paste("P=",round(mt,digits=4)),hjust=-.2,vjust=2)+xlab(colnames(data_map)[2])+ylab("CHAO1")
   detach(tempframe_chaoooo)
   }
-  if (is.factor(data_map[1,i])==F){tempframe_chaoooo=data.frame(shan=c(indexes[,3]),dv=as.factor(data_map[,i]))
+  if (is.factor(data_map[1,i])==F){tempframe_chaoooo=data.frame(shan=c(indexes[,3]),dv=data_map[,i])
   attach(tempframe_chaoooo)
   suppressWarnings(corr <- cor.test(c(shan),c(dv),method = "spearman"))
   plot(shan,dv,pch=19,col=rgb(0,0,100,50,maxColorValue=255),ylab= colnames(data_map)[i],xlab="Chao",main=paste("R=",round(corr$estimate,digits=4)," p=",round(corr$p.value,digits=4)))

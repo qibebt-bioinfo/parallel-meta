@@ -1,7 +1,7 @@
 # Parallel-META 3
 
-![Version](https://img.shields.io/badge/Version-3.5.3-brightgreen)
-![Release date](https://img.shields.io/badge/Release%20date-Dec.%2025%2C%202019-brightgreen)
+![Version](https://img.shields.io/badge/Version-3.5.4-brightgreen)
+![Release date](https://img.shields.io/badge/Release%20date-Oct.%2021%2C%202020-brightgreen)
 
 
 
@@ -83,7 +83,7 @@ a. Extract the package:
 tar –xzvf parallel-meta-3.tar.gz
 ```
 
-b. Configure the environment variables (default environment variable configuration file is located at “~/.bashrc” or “~/.bash_profile”)
+b. Configure the environment variables (default environment variable configuration file is located at “\~/.bashrc” or “\~/.bash_profile”)
 
 ```
 export ParallelMETA=Path to Parallel-META 3

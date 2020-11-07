@@ -40,13 +40,10 @@ OpenMP library is the C/C++ parallel computing library. Most Linux releases have
 
 For statistical analysis and pdf format output, Parallel-META 3 requires cran-R (<http://cran.r-project.org/>) 3.2 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
 
-## Bowtie2 (2.1.0 or higher, included in the package)
-
-Bowtie2 has been integrated in the package. If you want to install/update manually, please download from
-
-<http://sourceforge.net/projects/bowtie-bio/files/bowtie2/>
-
-and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+### Vsearch (included in the package)
+Vsearch has been integrated in the package. If you want to install/update manually, please download from
+https://sourceforge.net/projects/vsearch/
+and put the “vsearch”to $ParallelMETA/Aligner/bin/.
 
 ## HMMER 3 (3.0 or higher, included in the package)
 

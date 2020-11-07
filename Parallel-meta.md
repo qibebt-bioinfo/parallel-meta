@@ -130,9 +130,8 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 		-p List file path prefix [Optional for -l]
 	   or
 		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
-		
 		-n Denoise, T(rue) or F(alse), default is T
-        -c Dechimerism, T(rue) or F(alse), default is T
+		-c Dechimerism, T(rue) or F(alse), default is T
 	
 	Profiling parameters:
 		-M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F

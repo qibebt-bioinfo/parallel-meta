@@ -182,9 +182,8 @@ The PM-parallel-meta is the profiling tool for sequences. It accepts single shot
 		-R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]
 		-P (upper) Pair-end sequence orientation for -R
 		   0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0
-		   
-	    -n Denoise, T(rue) or F(alse), default is T
-        -c Dechimerism, T(rue) or F(alse), default is T
+		-n Denoise, T(rue) or F(alse), default is T
+	    -c Dechimerism, T(rue) or F(alse), default is T
 		
 	[Output options]
 		-o Output path, default is "Result"

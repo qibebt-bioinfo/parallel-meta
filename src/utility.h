@@ -1,7 +1,9 @@
 // Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-
+// Last update time: Nov 6, 2020
+// Updated by Yuzhu Chen
+// Notes: Get_Count_fastq
 #ifndef _UTILITY_H
 #define _UTILITY_H
 
@@ -114,7 +116,32 @@ unsigned int Get_Count(const char * infilename){
          
          return count;
          }
-
+         
+unsigned int Get_Count_fastq(const char * infilename){
+         
+         ifstream infile(infilename, ifstream::in);
+         
+         if (!infile){
+                      
+                      cerr << "Error: Cannot open file: " << infilename << endl;
+                      return 0;
+                      
+                      }
+         
+         string buffer;
+         unsigned int count = 0;
+         
+         while (getline(infile, buffer)){
+               
+               if (buffer[0] == '+') count ++;
+               
+               }
+         
+         infile.close();
+         infile.clear();
+         
+         return count;
+         }
 int Check_Format(const char * infilename){
     
     ifstream infile(infilename, ifstream::in);

@@ -4,7 +4,9 @@
 // version 3.1 or above with _Table_Format
 // version 3.4.1 or above wityh _OTU_Parser
 // Added unweighted based on 3.4.1
-
+// Last update time: Nov 6, 2020
+// Updated by Yuzhu Chen
+// Notes: modify default db='G'
 
 #include <iostream>
 #include <fstream>
@@ -81,7 +83,7 @@ int printhelp(){
     
 int Parse_Para(int argc, char * argv[]){
     
-    Ref_db = 'B';
+    Ref_db = 'G';
     
     Coren = 0;
     Mode = 0; //default is single;

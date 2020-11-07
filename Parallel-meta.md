@@ -1,7 +1,7 @@
 # Parallel-META 3 users’ manual
 
-![Version](https://img.shields.io/badge/Version-3.5.4-brightgreen)
-![Release date](https://img.shields.io/badge/Release%20date-Oct.%2021%2C%202020-brightgreen)
+![Version](https://img.shields.io/badge/Version-3.6-brightgreen)
+![Release date](https://img.shields.io/badge/Release%20date-Nov.%206%2C%202020-brightgreen)
 
 
 # Introduction

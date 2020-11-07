@@ -119,7 +119,7 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 	PM-pipeline [Option] value
 
 	[Options]:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 		-m Meta data file [Required] (See Meta-data format)
 		
 	Input options:
@@ -130,6 +130,8 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 		-p List file path prefix [Optional for -l]
 	   or
 		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
+		-n Denoise, T(rue) or F(alse), default is T
+        -c Dechimerism, T(rue) or F(alse), default is T
 	
 	Profiling parameters:
 		-M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F
@@ -171,7 +173,7 @@ The PM-parallel-meta is the profiling tool for sequences. It accepts single shot
 	PM-parallel-meta [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-m Input single sequence file (Shotgun) [Conflicts with -r and -R]
@@ -180,7 +182,9 @@ The PM-parallel-meta is the profiling tool for sequences. It accepts single shot
 		-R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]
 		-P (upper) Pair-end sequence orientation for -R
 		   0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0
-	
+	    -n Denoise, T(rue) or F(alse), default is T
+        -c Dechimerism, T(rue) or F(alse), default is T
+		
 	[Output options]
 		-o Output path, default is "Result"
 	
@@ -259,7 +263,7 @@ The PM-plot-taxa has already been integrated in program PM-parallel-meta.
 
 	PM-plot-taxa [Option] Value
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -293,7 +297,7 @@ The PM-predict-func has already been integrated in program PM-parallel-meta.
 	PM-predict-func [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))  or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -328,7 +332,7 @@ For NSTI (Nearest Sequenced Taxon Index) value calculation of functional analysi
 	PM-predict-func-nsti [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -362,7 +366,7 @@ For evaluation of OTUs to functional profiles.
 	PM-predict-func-contribute [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -393,7 +397,7 @@ Used for multi-sample feature selection (with a specified taxonomical level) bas
 	PM-select-taxa [Option] Value
 
 	Option:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, requried]
 		-l Input files list
@@ -464,7 +468,7 @@ For multi-sample comparison & similarity (distance) calculation based on the tax
 	PM-comp-taxa [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Two samples path for single sample comparison
@@ -538,7 +542,7 @@ or
 	PM-rand-rare [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file name
@@ -661,7 +665,7 @@ Used for taxonomy annotation update to 3.3.1 from 3.0-3.3. Notice that this is n
 	PM-update-taxa [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file

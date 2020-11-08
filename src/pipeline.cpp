@@ -1,8 +1,6 @@
 // Updated at Jan 30, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Last update time: Nov 6, 2020
-// Updated by Yuzhu Chen
 
 #include "pipeline.h"
 
@@ -50,14 +48,14 @@ int main(int argc, char * argv[]){
     }
     
     Input_sam_num = Ids.size();
-	
+    
     switch (Step){
         
     //Step 0: Parallel-META
     case 0:
                Check_Path(Singlesample_dir.c_str(), 1);
                Check_Path(Singlesamplelist_dir.c_str(), 1);
-               //Check_Path(Temp_dir.c_str(), 1);
+         
                
                if (Load_List(Seq_list_file.c_str(), Seq_files, List_prefix) == 0){
                                               string error_info = "Error: Please check the sequence list file (-i) or the list path prefix (-p)";
@@ -107,14 +105,11 @@ int main(int argc, char * argv[]){
                                
                                cout << endl << "Processing sample " << i + 1 << " of " << Ids.size() << endl;   
                                if (Is_paired_seq) //pair -end                            
-                                  sprintf(command, "%s/PM-parallel-meta -r %s -R %s -o %s -t %d -e %s -f F -P %s -k %c -D %c -n %c -c %c", Bin_path.c_str(), Seq_files[i * 2].c_str(), Seq_files[i * 2 + 1].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Align_mode.c_str(), Paired_mode.c_str(), Is_format_check, Ref_db,Is_denoised,Is_nonchimeras);
+                                  sprintf(command, "%s/PM-parallel-meta -r %s -R %s -o %s -t %d -e %s -f F -P %s -k %c -D %c", Bin_path.c_str(), Seq_files[i * 2].c_str(), Seq_files[i * 2 + 1].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Align_mode.c_str(), Paired_mode.c_str(), Is_format_check, Ref_db);
                                else
-                                   sprintf(command, "%s/PM-parallel-meta -%c %s -o %s -t %d -e %s -f F -L %d -k %c -D %c -n %c -c %c", Bin_path.c_str(), Seq_type, Seq_files[i].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Align_mode.c_str(), Length_t, Is_format_check, Ref_db,Is_denoised,Is_nonchimeras);
-                               Run_With_Error(command, "PM-parallel-meta", tmpError_file.c_str());
-                               
-                               //system(command);
+                                   sprintf(command, "%s/PM-parallel-meta -%c %s -o %s -t %d -e %s -f F -L %d -k %c -D %c", Bin_path.c_str(), Seq_type, Seq_files[i].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Align_mode.c_str(), Length_t, Is_format_check, Ref_db);
+                               Run_With_Error(command, "PM-parallel-meta", Error_file.c_str());
                                outscript << command << endl;
-                               
                                }                              
               //taxa list
               Taxa_list_file = Singlesamplelist_dir + "/taxa.list";
@@ -135,9 +130,6 @@ int main(int argc, char * argv[]){
            Check_Path(Sampleview_dir.c_str(), 1);
            Check_Path(Temp_dir.c_str(), 1);
            
-	   sprintf(command,"mv %s %s", tmpError_file.c_str(),Temp_dir.c_str());
-	   system(command);
-
            //make OTU table
            switch (Mode){
                   case 0: //list

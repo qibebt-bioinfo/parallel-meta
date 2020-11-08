@@ -15,7 +15,7 @@
 #include "utility.h"
 #include "version.h"
 
- 
+
 using namespace std;
 
 int Print_ExtractRNA_Help(){
@@ -59,7 +59,7 @@ int main(int argc, char * argv[]){
 		Print_ExtractRNA_Help();
     
     int i = 1;
-       
+    
     while(i<argc){
          if (argv[i][0] != '-') {
                            printf("Argument # %d Error : Arguments must start with -\n", i);
@@ -92,6 +92,7 @@ int main(int argc, char * argv[]){
     Check_Path((out_path + "/tmp").c_str(), 0);
     
     if (format == 1){//If fastq
+                  
         string tempfilename = out_path + "/meta.fasta";
         cout << "Pre-computation for Fastq Starts" << endl;
         cout << endl << Fastq_2_Fasta(infilename.c_str(), tempfilename.c_str()) << " sequences have been pre-computed" << endl << endl;

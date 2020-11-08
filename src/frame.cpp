@@ -1,9 +1,7 @@
 // Updated at Sept 19, 2018
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Last update time: Nov 6, 2020
-// Updated by Yuzhu Chen
-// Notes: modify function call (bowtie -> vsearch)
+
 #include <iostream>
 
 #include "init.h"
@@ -37,19 +35,18 @@ void Single_Run(_Para para){
                          }
                                
     if (para.Format == 1){//If fastq
-        if(!para.Is_paired){
-			string tempfilename = para.Out_path + "/meta.fasta";
-        	cout << "Pre-computation for Fastq Starts" << endl;
-        	cout << endl << Fastq_2_Fasta(para.Infilename.c_str(), tempfilename.c_str()) << " sequences have been pre-computed" << endl << endl;
-        	para.Infilename = tempfilename;      
-		}  
-    }
+                    
+        string tempfilename = para.Out_path + "/meta.fasta";
+        cout << "Pre-computation for Fastq Starts" << endl;
+        cout << endl << Fastq_2_Fasta(para.Infilename.c_str(), tempfilename.c_str()) << " sequences have been pre-computed" << endl << endl;
+        para.Infilename = tempfilename;
+        
+        }
     
     //for pair ends
     if (para.Is_paired){
                         para.Format = Check_Format(para.Infilename2.c_str()); 
                         if (para.Format < 0) return;
-                        
                         if (para.Is_format_check){//Check format
                                                  cout << "Format Check 2 Starts" << endl;
                                                  command = para.This_path + "/bin/PM-format-seq -i " + para.Infilename2;
@@ -57,39 +54,30 @@ void Single_Run(_Para para){
                                                  cout << endl;
                                                  }
                         if (para.Format == 1){//If fastq     
-                                             //string tempfilename = para.Out_path + "/meta2.fasta";
-                                             //cout << endl << Fastq_2_Fasta(para.Infilename2.c_str(), tempfilename.c_str()) << " sequences have been pre-computed" << endl << endl;
-                                             //para.Infilename2 = tempfilename;                                                        
+                                             string tempfilename = para.Out_path + "/meta2.fasta";
+                                             cout << endl << Fastq_2_Fasta(para.Infilename2.c_str(), tempfilename.c_str()) << " sequences have been pre-computed" << endl << endl;
+                                             para.Infilename2 = tempfilename;                                                        
                             }
                         }
-    
-    //Type, 0: 16S  1: shotgun        
+            
     if (para.Type == 1){ //If meta
          //Extract 16S r RNA
          seq_count = ExtractRNA(para.Database.Get_Domain(), para.Infilename, para.Out_path, para.Length_filter, para.This_path, para.Core_number);
     
          //Parallel-megablast to map
-		 rna_count = Parallel_Align(para.Align_exe_name.c_str(), para.Out_path + "/meta.rna", para.Out_path + "/tmp", para.Database.Get_Path() + "/database.fa", para.Is_denoised, para.Is_nonchimeras, "");
-		 }
+         rna_count = Parallel_Align(para.Align_exe_name.c_str(), para.Out_path + "/meta.rna", para.Out_path + "/tmp", para.Database.Get_Path() + "/database", para.Align_mode, para.Core_number, "");
+         }
     else if (para.Is_paired){ // If paired
-    	 if(para.Format == 0){
-    	 		cout << "Error: For pair ends you need to input fastq format file" << endl; 
-    	 		return ;
-		 }else{
-		 	//Parallel-megablast to map
-         	rna_count = Parallel_Align_Paired(para.Align_exe_name.c_str(), para.Infilename, para.Infilename2, para.Out_path + "/tmp", para.Database.Get_Path()+ "/database.fa", para.Is_denoised, para.Is_nonchimeras, "");
+        //Parallel-megablast to map
+         rna_count = Parallel_Align_Paired(para.Align_exe_name.c_str(), para.Infilename, para.Infilename2, para.Out_path + "/tmp", para.Database.Get_Path()+ "/database", para.Align_mode, para.Paired_mode, para.Core_number, "");
          
-         	if (rna_count < 0) {                       
+         if (rna_count < 0) {                       
                        cerr << "Error: 2 ends contain different number of sequences" << endl;
                        return;
-            }
-         	}
-		 }                        							
-        
+                       }
+         }
     else 
-    	 //原bowtie2调用函数 Parallel_Align
-         //rna_count = Parallel_Align(para.Align_exe_name.c_str(), para.Infilename, para.Out_path + "/tmp", para.Database.Get_Path() + "/database", para.Align_mode, para.Core_number, "");
-    	 rna_count = Parallel_Align(para.Align_exe_name.c_str(), para.Infilename, para.Out_path + "/tmp", para.Database.Get_Path() + "/database.fa", para.Is_denoised, para.Is_nonchimeras, "");
+         rna_count = Parallel_Align(para.Align_exe_name.c_str(), para.Infilename, para.Out_path + "/tmp", para.Database.Get_Path() + "/database", para.Align_mode, para.Core_number, "");
     
     //parse_taxonomy 
     Out_Taxonomy((para.Out_path + "/tmp/map_output.txt").c_str(), para.Out_path, para.Database, 0, a_diver, para.Is_paired, match_rna_count, drop_rna_count);

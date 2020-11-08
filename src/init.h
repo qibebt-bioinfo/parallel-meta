@@ -1,8 +1,5 @@
 // Updated at Dec 26, 2018
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Last update time: Nov 6, 2020
-// Updated by Yuzhu Chen
-// Notes: add two new parameters,-n for denoised, -c for nonchimeras
 
 #include <iostream>
 #include <fstream>
@@ -28,8 +25,7 @@ class _Para{
       public:
              _Para(){
                      This_path = Check_Env();
-                     //Align_exe_name = This_path + "/Aligner/bin/bowtie2-align-s";
-                     Align_exe_name = This_path + "/Aligner/bin/vsearch"; 
+                     Align_exe_name = This_path + "/Aligner/bin/bowtie2-align-s";
                      Length_filter = 0;
                      Core_number = 0;
                      Type = -1;
@@ -41,10 +37,6 @@ class _Para{
                      Is_paired = false; 
                      Is_func = true;
                      Paired_mode = "fr";
-                     
-                    //newadd
-                     Is_denoised = 'T';
-                     Is_nonchimeras = 'T';
                      }
              
              string This_path;
@@ -64,13 +56,7 @@ class _Para{
              bool Is_paired;
              string Paired_mode;
              bool Is_func;
-    		 
-    		 //newadd
-    		 char Is_denoised;
-    		 char Is_nonchimeras;
-    		 //bool Is_denoised;
-    		 //bool Is_nonchimeras;
-    		 
+    
              _PMDB Database;
              };
 
@@ -90,10 +76,6 @@ int Print_Help(){
 	cout << "\t  -R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]" << endl;
     cout << "\t  -P (upper) Pair-end sequence orientation for -R" << endl;
     cout << "\t     0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0" << endl;
-    
-    //newadd
-    cout << "\t  -n Denoise, T(rue) or F(alse), default is T" << endl;
-    cout << "\t  -c Dechimerism, T(rue) or F(alse), default is T" << endl;
     
     cout << "\t[Output options]" << endl;
 	cout << "\t  -o Output path, default is \"Result\"" << endl;
@@ -125,19 +107,9 @@ int Print_Config(_Para para){
        cout << "The input pair sequence is " << para.Infilename2 << endl;
         
     cout << "The functional annotation is ";
-    if (para.Is_func) cout << "On" << endl;
+    if (para.Is_func ) cout << "On" << endl;
     else cout << "Off" << endl;
-    
        
-    //newadd 
-    cout << "The denoising function is ";
-    if (para.Is_denoised == 'T') cout << "On" << endl;
-    else cout << "Off" << endl;
-    
-    cout << "The chimeras removal function is ";
-    if (para.Is_nonchimeras == 'T') cout << "On" << endl;
-    else cout << "Off" << endl;
-    
     cout << "The core number is " << para.Core_number << endl << endl;
 
     return 0;
@@ -213,7 +185,7 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
                            };           
          switch(argv[i][1]){
                             case 'D' : para.Database.Set_DB(argv[i+1][0]);
-                                       break; //Default is GG97
+                                       break; //Default is 16S
                  
                             case 'm' : if (para.Type != -1){
                                                      cerr << "Error: -m conflicts with -r" << endl;
@@ -263,15 +235,9 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
                                                          }
                                        break; //Default is 0
                             case 't' : para.Core_number = atoi(argv[i+1]); break; //Default is Auto                                       
-                            case 'f' : if ( (argv[i+1][0] == 'F') || (argv[i+1][0] == 'f') ) para.Is_func = false; break; //Default is On
+                            case 'f' : if ((argv[i+1][0] == 'F') || (argv[i+1][0]) == 'f' ) para.Is_func = false; break; //Default is On
                             case 'h' : Print_Help(); break;
-							//newadd
-							case 'n' : if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) para.Is_denoised = 'T';  //Default is true
-									   else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F'))	para.Is_denoised = 'F';
-									   break; 
-							case 'c' : if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) para.Is_nonchimeras = 'T';  //Default is true
-									   else if ((argv[i+1][0] == 'f')||(argv[i+1][0] == 'F')) para.Is_nonchimeras = 'F';
-									   break; 		   
+
                             default : printf("Error: Unrec argument %s\n", argv[i]); Print_Help(); break; 
                             }
          i+=2;
@@ -299,7 +265,7 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
     
     int max_Core_number = sysconf(_SC_NPROCESSORS_CONF);
     
-    if ((para.Core_number <= 0) || (para.Core_number > max_Core_number   )){
+    if ((para.Core_number <= 0) || (para.Core_number > max_Core_number)){
                     //cerr << "Core number must be larger than 0, change to automatic mode" << endl;
                     para.Core_number = max_Core_number;
                     }

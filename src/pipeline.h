@@ -2,8 +2,6 @@
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // Note: Add 18S, Add Table & BIOM
-// Last update time: Nov 6, 2020
-// Updated by Yuzhu Chen
 
 #include <iostream>
 #include <fstream>
@@ -54,7 +52,6 @@ string Func_list_file;
 string List_prefix;
 string Report_file;
 string Error_file;
-string tmpError_file;
 
 string Table_file;
 
@@ -73,7 +70,7 @@ string Singlesamplelist_dir = "Single_Sample.List";
 string Temp_dir = "Temp";
 
 //para
-char Ref_db = 'G'; //G: GG97; S: SILVA 16s; O Oral_Core; E: SILVA 18S; T: ITS; C: GG99 
+char Ref_db = 'B'; //B: 16S; E: 18S
 _PMDB Database;
 
 string Out_path;
@@ -93,10 +90,6 @@ bool Is_func = true;
 bool Is_rare = false;
 bool Is_rare_curve = false;
 bool Is_paired_seq = false;
-
-//newadd
-char Is_denoised='T';
-char Is_nonchimeras='T';
 
 int Rare_depth = 0;
 int Bootstrap = DEF_BOOT;
@@ -142,11 +135,6 @@ int printhelp(){
     cout << "\t  -p List file path prefix [Optional for -l]" << endl;
     cout << "\tor" << endl;
     cout << "\t  -T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i]" << endl;
-    
-    //newadd
-    cout << "\t  -n Denoise, T(rue) or F(alse), default is T" << endl;
-    cout << "\t  -c Dechimerism, T(rue) or F(alse), default is T" << endl;
-    
     cout << endl;
     
     cout << "\t[Output options]" << endl;
@@ -328,7 +316,7 @@ int Parse_Para(int argc, char * argv[]){
     Bin_path = Check_Env() + "/bin/";
     R_path = Check_Env() + "/Rscript";
     
-    Ref_db = 'G';
+    Ref_db = 'B';
     
     List_prefix = "";
     
@@ -417,7 +405,7 @@ int Parse_Para(int argc, char * argv[]){
                                       break; 
                             
                             //adv args                                                                                                                  
-                            case 'f': if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F' )) Is_func = false; break;
+                            case 'f': if ((argv[i+1][0] == 'f') || (argv[i+1][0]) == 'F' ) Is_func = false; break;
                             
                             case 'L': Parse_TLevel(argv[i+1]); break;
                             case 'F': Parse_FLevel(argv[i+1]); break;                                                                
@@ -432,13 +420,7 @@ int Parse_Para(int argc, char * argv[]){
                             case 'E': if ((argv[i+1][0] == 'T') || (argv[i+1][0]) == 't' ) Is_pair = 'T'; break;
                             case 'C': Cluster = atoi(argv[i+1]); break;
                             case 'G': Network_t = atof(argv[i+1]); break;
-                            //newadd
-							case 'n' : if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_denoised = 'T';  //Default is true
-									   else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F'))	Is_denoised = 'F';
-									   break; 
-							case 'c' : if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_nonchimeras = 'T';  //Default is true
-									   else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F'))	Is_nonchimeras = 'F';
-									   break;
+                            
                             //other args
                             case 't': Coren = atoi(argv[i+1]); break;         
                             case 'h': printhelp(); break;
@@ -467,7 +449,6 @@ int Parse_Para(int argc, char * argv[]){
     
     Report_file = Out_path + "/Analysis_Report.txt";
     Error_file = Out_path + "/error.log";
-    tmpError_file= Out_path + "/tmperror.log";
     remove(Error_file.c_str());
     
     int Max_Core_number = sysconf(_SC_NPROCESSORS_CONF);

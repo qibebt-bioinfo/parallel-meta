@@ -1,6 +1,9 @@
 // Updated at May 18, 2016
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 //version 3.1 or above with Bowtie2
+// Last update time: Dec 1, 2020
+// Updated by Yuzhu Chen
+// Notes: change to ASV
 
 #include <iostream>
 #include <fstream>
@@ -24,51 +27,116 @@
 
 using namespace std;
 
-int Parallel_Align(string programname, string infilename, string outpath, string database_path, string mode, int coren, string other_args){
-    
-    //New aligner: bowtie2-align-s
-    cout << "Mapping starts" << endl;
+string Merge_Pairend(string programname, string infilename_1, string infilename_2, string outpath){
+	cout << "Merging starts" << endl;
         
-    int seq_n = Get_Count(infilename.c_str());
-
-    cout << "There are " << seq_n << " sequences in total" << endl << endl;
-    
-    mkdir((outpath + "/maptemp").c_str(), 0755);
-    
-    //command
-    
-    char command[BUFFER_SIZE];
-    
-    sprintf(command, "%s -x %s --%s --no-hd --no-sq --quiet -p %d -f %s -S %s/map_output.txt %s", programname.c_str(), database_path.c_str(), mode.c_str(), coren, infilename.c_str(), outpath.c_str(), other_args.c_str());
-    system(command);
-    
-    cout << "Mapping Finished" << endl ;   
-    return seq_n;
-    }
-
-int Parallel_Align_Paired(string programname, string infilename_1, string infilename_2, string outpath, string database_path, string mode, string paired_mode, int coren, string other_args){
-    
-    //New aligner: bowtie2-align-s
-    cout << "Mapping starts" << endl;
-        
-    int seq_n_1 = Get_Count(infilename_1.c_str());  
-    int seq_n_2 = Get_Count(infilename_2.c_str());  
-    
-    if (seq_n_1 != seq_n_2) return -1;
+    int seq_n_1 = Get_Count_fastq(infilename_1.c_str());  
+    int seq_n_2 = Get_Count_fastq(infilename_2.c_str());
+	  
+    if (seq_n_1 != seq_n_2) return "";
     
     cout << "There are " << seq_n_1 << " paired sequences in total" << endl << endl;
     
     mkdir((outpath + "/maptemp").c_str(), 0755);
-    
-    //command
+	
+	//command
     
     char command[BUFFER_SIZE];
     
-    sprintf(command, "%s -x %s --%s --no-hd --no-sq --quiet -p %d -f -1 %s -2 %s -S %s/map_output.txt --%s %s", programname.c_str(), database_path.c_str(), mode.c_str(), coren, infilename_1.c_str(), infilename_2.c_str(), outpath.c_str(), paired_mode.c_str(), other_args.c_str());
-    system(command);
-    
-    cout << "Mapping Finished" << endl ;   
-    return seq_n_1;
-    }
+	sprintf(command,"%s --fastq_mergepairs %s --reverse %s --fastaout %s/merged",programname.c_str(),infilename_1.c_str(), infilename_2.c_str(),outpath.c_str()); 
+	system(command);
+	
+	cout << "Merging Finished" << endl << endl;   
+	string mergefile=outpath+"/merged" ;
+    return  mergefile;
+}
 
+string Handle_seq(string programname, string infilename, string outpath, char Is_denoised, char Is_nonchimeras, int & rna_count, int & asv_count){
+    rna_count = Get_Count(infilename.c_str());
+
+    cout << "There are " << rna_count << " sequences in total" << endl << endl;
+    
+	cout << "Profiling starts" << endl << endl;
+    //command  
+    char command[BUFFER_SIZE];
+    
+    //vsearch 1.dereplication; 2.denoise; 3.nonchimeras; 4.db
+    
+	string fir_name="dereplication";
+	string fir_path=outpath+'/'+fir_name;
+	//v1:dereplication
+		sprintf(command,"%s --derep_fulllength %s --sizeout --output %s --minuniquesize 1 -relabel sequence.",programname.c_str(),infilename.c_str(),fir_path.c_str());
+    	system(command); 	
+    	//cout<< command << endl;
+    	
+    string sec_name;
+    string sec_path;
+    if(Is_denoised == 'T'){//=true,denoise 
+    	sec_name="denoised";
+    	sec_path=outpath+'/'+sec_name;
+    	//v2:denoise
+    	sprintf(command,"%s --cluster_unoise %s --sizein --sizeout --centroids %s --minsize 1",programname.c_str(),fir_path.c_str(),sec_path.c_str());
+    	system(command);
+    	//cout<< command << endl;
+    	asv_count=Get_Count(sec_path.c_str());
+	}else{
+		sec_name=fir_name;
+		sec_path=fir_path;
+	}
+	
+	string thi_name;
+	string thi_path;
+	if(Is_nonchimeras == 'T'){//=true, remove chimeras
+		thi_name="nonchimeras";
+		thi_path=outpath+'/'+thi_name;
+		//v3:nonchimeras
+    	sprintf(command,"%s --uchime3_denovo %s --sizein --sizeout --nonchimeras %s",programname.c_str(),sec_path.c_str(),thi_path.c_str());
+    	system(command);
+    	//cout<< command << endl;
+	}else{
+		thi_name=sec_name;
+		thi_path=sec_path;
+	}
+	
+	/*	
+	string fou_name;
+	string fou_path;
+	fou_name="rereplicate";
+	fou_path=outpath+'/'+fou_name;
+	
+	sprintf(command,"%s -rereplicate %s -output %s",programname.c_str(),thi_path.c_str(),fou_path.c_str());
+
+	string handlefile = fou_path;
+	*/
+	string handlefile = thi_path;
+	return handlefile; 
+}
+int Search_db(string programname, string infilename, string outpath, string database_path, double db_similarity, char Shotgun){
+        
+    int seq_n = Get_Count(infilename.c_str()); 
+	
+	//command  
+    char command[BUFFER_SIZE];
+    
+    string fir_name="dereplication";
+	string fir_path=outpath+'/'+fir_name;
+	
+    if(Shotgun == 'T'){
+    	cout << "There are " << seq_n << " sequences in total" << endl << endl;
+    	cout << "Profiling starts" << endl << endl;
+    	
+    	sprintf(command,"%s --derep_fulllength %s --sizeout --output %s --minuniquesize 1 -relabel sequence.",programname.c_str(),infilename.c_str(),fir_path.c_str());
+    	system(command);
+    	
+    	infilename=fir_path;
+	}
+
+    //global search db, output format is sam 
+    sprintf(command,"%s --id %.2f --db %s --usearch_global %s --otutabout %s/map_output.txt",programname.c_str(), db_similarity, database_path.c_str(),infilename.c_str(),outpath.c_str()); 
+    system(command);
+    //cout<< command << endl;
+    
+    cout << "Profiling finished" << endl ;          
+    return seq_n;
+    }
 #endif

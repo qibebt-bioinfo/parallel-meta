@@ -2,7 +2,9 @@
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
-
+// Last update time: Nov 6, 2020
+// Updated by Yuzhu Chen
+// Notes: modify default db='G'
 
 #include <iostream>
 
@@ -75,7 +77,7 @@ int printhelp(){
     
 int Parse_Para(int argc, char * argv[]){
     
-    Ref_db = 'B';
+    Ref_db = 'G';
     
     Coren = 0;
     Mode = true; //default is single;

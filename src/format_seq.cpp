@@ -22,7 +22,7 @@ int Mode = -1; //0: single; 1: list
 int printhelp(){
 
     cout << "Format-seq version: " << Version << endl;
-    cout << "\tSequence format check and reformat for Parallel-META 3" << endl;
+    cout << "\tSequence format check and reformat for Parallel-Meta 3" << endl;
     cout << "Usage:" << endl;
     cout << "PM-format-seq [Option] Value" << endl;
     cout << "Options: " << endl;
@@ -218,7 +218,7 @@ void Reformat(string infilename){
    if(is_ok){
 	string Opt="rm "+infilename+".tmp";
 	system(Opt.c_str());
-	cout<<infilename<<" is OK for Parallel-META" << endl;
+	cout<<infilename<<" is OK for Parallel-Meta" << endl;
 	}
 	else{
          string Opt="cp "+infilename+" "+infilename+".bk";
@@ -227,7 +227,7 @@ void Reformat(string infilename){
 	     system(Opt.c_str());
 		 Opt="rm "+infilename+".tmp";
 	     system(Opt.c_str());
-         cout<<infilename<<" is formated for Parallel-META" << endl;
+         cout<<infilename<<" is formated for Parallel-Meta" << endl;
          cout<<"The original file backup is "<<infilename<<".bk"<<endl; 
     }
     infile.close();

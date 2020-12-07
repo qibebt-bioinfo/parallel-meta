@@ -1,5 +1,7 @@
 // Updated at Dec 26, 2018
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
+// Last update time: Dec 1, 2020
+// Updated by Yuzhu Chen
 
 #include <iostream>
 #include <fstream>
@@ -25,18 +27,23 @@ class _Para{
       public:
              _Para(){
                      This_path = Check_Env();
-                     Align_exe_name = This_path + "/Aligner/bin/bowtie2-align-s";
+                     //Align_exe_name = This_path + "/Aligner/bin/bowtie2-align-s";
+                     Align_exe_name = This_path + "/Aligner/bin/vsearch"; 
                      Length_filter = 0;
                      Core_number = 0;
                      Type = -1;
                      Out_path = "./Result";
-                     Align_mode = "very-sensitive-local";
                  
              
                      Is_format_check = false;  
                      Is_paired = false; 
                      Is_func = true;
-                     Paired_mode = "fr";
+                     
+                    //newadd parameters
+                     Is_denoised = 'T';
+                     Is_nonchimeras = 'T';
+                    //Similarity when searching database, default is 0.97 
+                     db_similarity = 0.99;
                      }
              
              string This_path;
@@ -46,7 +53,6 @@ class _Para{
              string Groupfilename;
              string Listfilename;
              string Out_path;
-             string Align_mode;
     
              int Type; //0: 16S 1: shotgun
              int Format; //0: fasta 1: fastq;
@@ -54,15 +60,19 @@ class _Para{
              int Core_number;
              bool Is_format_check;
              bool Is_paired;
-             string Paired_mode;
              bool Is_func;
-    
+    		 
+    		 //newadd
+    		 char Is_denoised;
+    		 char Is_nonchimeras;
+    		 double db_similarity;
+    		 
              _PMDB Database;
              };
 
 int Print_Help(){
     
-    cout << "Parallel-META version: " << Version << endl;
+    cout << "Parallel-Meta version: " << Version << endl;
     cout << "\tMicrobiome sample profiling" << endl;
     cout << "Usage:" << endl;
     cout << "PM-parallel-meta [Option] Value" << endl;
@@ -74,15 +84,17 @@ int Print_Help(){
     cout << "\t  or" << endl;
 	cout << "\t  -r Input single sequence file (rRNA targeted) [Conflicts with -m]" << endl;
 	cout << "\t  -R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]" << endl;
-    cout << "\t  -P (upper) Pair-end sequence orientation for -R" << endl;
-    cout << "\t     0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0" << endl;
+    
+    //newadd
+    cout << "\t  -v ASV denoising, T(rue) or F(alse), default is T [optional for -i]" << endl;
+    cout << "\t  -c Chimera removal, T(rue) or F(alse), default is T [optional for -i]" << endl;
+    cout << "\t  -d Sequence alignment threshold (float value 0-1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-n F) [optional for -i]" << endl;
+    cout << endl;
     
     cout << "\t[Output options]" << endl;
 	cout << "\t  -o Output path, default is \"Result\"" << endl;
     
     cout << "\t[Other options]" << endl;
-	cout << "\t  -e Alignment mode" << endl;
-	cout << "\t     0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3" << endl;
     cout << "\t  -k Sequence format check, T(rue) or F(alse), default is F" << endl;
 	cout << "\t  -L (upper) rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [Optional for -m, Conflicts with -r]" << endl;
     cout << "\t  -f Functional analysis, T(rue) or F(alse), default is T" << endl;
@@ -95,28 +107,42 @@ int Print_Help(){
 
 int Print_Config(_Para para){
     
-    cout << "The reference sequence database is ";
+    cout << "Reference database is ";
     cout << para.Database.Get_Description() << endl;
     
-    cout << "The input sequence Type is ";
-    if (para.Type == 1) cout << "Metagenomic Shotgun Sequences" << endl;
-    else cout << "rRNA Targeted Sequences" << endl;
+    cout << "Input sequence type is ";
+    if (para.Type == 1) cout << "Metagenomic shotgun sequences" << endl;
+    else cout << "rRNA targeted sequences" << endl;
     
-    cout << "The input sequence is " << para.Infilename << endl;
+    cout << "Input sequence is " << para.Infilename << endl;
     if (para.Is_paired)
-       cout << "The input pair sequence is " << para.Infilename2 << endl;
+       cout << "Input pair sequence is " << para.Infilename2 << endl;
         
-    cout << "The functional annotation is ";
-    if (para.Is_func ) cout << "On" << endl;
+    cout << "Functional prediction is ";
+    if (para.Is_func) cout << "On" << endl;
     else cout << "Off" << endl;
-       
+    
+    if(para.Type != 1){
+    	//newadd    
+    	cout << "ASV denoising is ";
+    	if (para.Is_denoised == 'T') cout << "On" << endl;
+    	else cout << "Off" << endl;
+    
+    	cout << "Chimera removal is ";
+    	if (para.Is_nonchimeras == 'T') cout << "On" << endl;
+    	else cout << "Off" << endl;
+	}   
+    
+    cout << "Sequence alignment threshold is ";
+    cout <<  para.db_similarity << endl;
+    
     cout << "The core number is " << para.Core_number << endl << endl;
 
     return 0;
     
     }
 
-int Print_Report(_Para para, unsigned int seq_count, unsigned int rna_count, unsigned int match_rna_count, int * a_diver){
+int Print_Report(_Para para, unsigned int seq_count, unsigned int rna_count, unsigned int match_rna_count, int * a_diver, int asv_count){
     
     ofstream outfile((para.Out_path + "/Analysis_Report.txt").c_str(), ofstream::out);
     
@@ -127,40 +153,52 @@ int Print_Report(_Para para, unsigned int seq_count, unsigned int rna_count, uns
     
     string taxa_name [LEVEL] = {"Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU"};
     
-    outfile << "Parallel-META Analysis Report" << endl;
-    outfile << "Version " << Version << endl;
+    outfile << "Parallel-Meta Analysis Report" << endl;
+    outfile << "Version: " << Version << endl;
     
-    outfile << "Domain : ";
+    outfile << "Reference database: ";
     
     outfile << para.Database.Get_Description() << endl;
     
-    outfile << "Input Type : ";
-    if (para.Type == 1) outfile << "Metagenomic Shotgun Sequences" << endl;
-    else outfile << "rRNA Targeted Sequences" << endl; 
+    outfile << "Input type : ";
+    if (para.Type == 1) outfile << "Metagenomic shotgun sequences" << endl;
+    else outfile << "rRNA targeted sequences" << endl; 
     
-    outfile << "Input File : " << para.Infilename << endl;
+    outfile << "Input file : " << para.Infilename << endl;
     
     if (para.Is_paired){
-       outfile << "Input Paired File : " << para.Infilename2 << endl;
-       outfile << "Input Paired File rientation : " << para.Paired_mode << endl;
+       outfile << "Input paired file : " << para.Infilename2 << endl;
        }
        
     if (para.Type == 1){
-       outfile << "rRNA Extraction Length Filter : ";
+       outfile << "rRNA extraction length filter : ";
        if (para.Length_filter == 0) outfile << "Off" << endl;
        else outfile << para.Length_filter << endl;
        }
-
-    outfile << "Alignment Mode : " << para.Align_mode << endl;
-            
+	if (para.Type !=1){
+		//denoise chimera similarity
+    	outfile << "ASV denoising:";
+    	if (para.Is_denoised == 'T') outfile << " Yes" <<endl;
+    	else outfile << " No" << endl;
+     
+    	outfile << "Chimera removal:";
+    	if (para.Is_nonchimeras == 'T') outfile << " Yes" <<endl;
+    	else outfile << " No" << endl;
+	}
+ 
+    outfile << "Sequence alignment threshold: ";
+    outfile <<  para.db_similarity <<endl;
+	         
     if (para.Type == 1)
-    outfile << "Metagenomic Sequence Number : " << seq_count << endl;
+    outfile << "Metagenomic sequence number: " << seq_count << endl;
     
-    outfile << "rRNA Sequence Number : " << rna_count << endl;
+    outfile << "rRNA sequence number: " << rna_count << endl;
     
-    outfile << "Mapped rRNA Sequence Number : " << match_rna_count << endl;
+    outfile << "Mapped rRNA sequence number: " << match_rna_count << endl;
     
-    outfile << "Alpha Diversity:" << endl;
+    if (para.Is_denoised == 'T' && para.Type!=1) outfile << "ASV number: " << asv_count << endl;
+    else ;
+    outfile << "Alpha diversity (# of taxa):" << endl;
     
     for (int i = 0; i < LEVEL; i ++)
         outfile << taxa_name[i] << "\t" << a_diver[i] << endl;
@@ -185,14 +223,17 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
                            };           
          switch(argv[i][1]){
                             case 'D' : para.Database.Set_DB(argv[i+1][0]);
-                                       break; //Default is 16S
+                                       break; //Default is GG97
                  
                             case 'm' : if (para.Type != -1){
                                                      cerr << "Error: -m conflicts with -r" << endl;
                                                      exit(0);
                                                      }
                                        para.Infilename = argv[i+1];
-                                       para.Type = 1;                                                                                                          
+                                       para.Type = 1;   
+									   para.Is_denoised = 'F';
+                                       para.Is_nonchimeras = 'F';
+                                       para.db_similarity =0.97;                                                                                                       
                                        break;  
                             
                             case 'r' : if (para.Type != -1){
@@ -207,23 +248,8 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
                                        para.Is_paired = true;
                                        break;
                             
-                            case 'P': switch (argv[i+1][0]){
-                                                             case '0': para.Paired_mode = "fr"; break;
-                                                             case '1': para.Paired_mode = "ff"; break;
-                                                             case '2': para.Paired_mode = "rf"; break;
-                                                             default: para.Paired_mode = "fr"; break;
-                                                             }
-                                       break; // Default is "fr"
                             case 'o' : para.Out_path = argv[i+1]; break; //Default is ./result                      
-     
-                            case 'e' : switch (argv[i+1][0]){
-                                                             case '0': para.Align_mode = "very-fast-local"; break;
-                                                             case '1': para.Align_mode = "fast-local"; break;
-                                                             case '2': para.Align_mode = "sensitive-local"; break;
-                                                             case '3': para.Align_mode = "very-sensitive-local"; break;
-                                                             default: para.Align_mode = "very-sensitive-local"; break;                   
-                                              }
-                                        break; //Default is "very-sensitive-local"
+
                             case 'k' : if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T' )) para.Is_format_check = true; 
                                        else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F' )) para.Is_format_check = false;
                                        break;
@@ -235,14 +261,30 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
                                                          }
                                        break; //Default is 0
                             case 't' : para.Core_number = atoi(argv[i+1]); break; //Default is Auto                                       
-                            case 'f' : if ((argv[i+1][0] == 'F') || (argv[i+1][0]) == 'f' ) para.Is_func = false; break; //Default is On
+                            case 'f' : if ( (argv[i+1][0] == 'F') || (argv[i+1][0] == 'f') ) para.Is_func = false; break; //Default is On
                             case 'h' : Print_Help(); break;
-
+							//newadd
+							case 'v' : if(para.Type == 1){
+											para.Is_denoised = 'F';
+									   }else{
+									   		if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) para.Is_denoised = 'T';  //Default is true
+									   		else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F')) para.Is_denoised = 'F';
+									   		if(para.Is_denoised == 'F') para.db_similarity =0.97;
+									   }
+									   break; 
+							case 'c' : if(para.Type == 1){
+											para.Is_nonchimeras = 'F';
+									   }else{
+											if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) para.Is_nonchimeras = 'T';  //Default is true
+									   		else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F')) para.Is_nonchimeras = 'F';
+									   }
+									   break;	
+							case 'd' : para.db_similarity = atof(argv[i+1]);
+									   break; 	   
                             default : printf("Error: Unrec argument %s\n", argv[i]); Print_Help(); break; 
                             }
          i+=2;
          }
-    
     //check func
     if (!para.Database.Get_Is_Func()) para.Is_func = false;
     
@@ -251,13 +293,21 @@ int Parse_Para(int argc, char * argv[], _Para &para){ //Parse Parameters
                                       cerr << "Error: Please input the sequence file by -m or -r ( and -R)" << endl;             
                                       exit(0);
                                       }
-    
+    //check search database similarity
+    if (para.db_similarity <= 0 || para.db_similarity > 1){
+    		cerr <<"Error: Please input right sequence alignment threshold, the value range is from 0 to 1" << endl;
+    		exit(0);
+	}
     //check pair
     if (para.Is_paired){
                         if (para.Type != 0){
                                       cerr << "Error: Pair-end sequences only support 16S rRNA" << endl;
                                       exit(0);
-                                      }                        
+                                      } 
+						if (Check_Format(para.Infilename.c_str()) == 0||Check_Format(para.Infilename2.c_str())==0){
+							cerr << "Error: For pair-end sequences only support fastq format" << endl; 
+							exit(0);
+						}                    
                         }
                 
     Check_Path(para.Out_path.c_str(), 0); //Check output path 

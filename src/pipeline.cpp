@@ -1,8 +1,11 @@
 // Updated at Jan 30, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
+// Last update time: Dec 1, 2020
+// Updated by Yuzhu Chen
 
 #include "pipeline.h"
+#include "utility.h"
 
 using namespace std;
 
@@ -23,8 +26,8 @@ int main(int argc, char * argv[]){
                     cerr << "Warning: Cannot open output file : " << Out_path << "/scripts.sh" << endl;                    
                     }
     
-    cout << "Parallel-META Pipeline Version: " << Version << endl;
-    outscript << "#Parallel-META Pipeline Version: " << Version << endl;
+    cout << "Parallel-Meta Pipeline Version: " << Version << endl;
+    outscript << "#Parallel-Meta  Pipeline Version: " << Version << endl;
     
     cout << "The reference sequence database is ";
     cout << Database.Get_Description() << endl;
@@ -48,14 +51,14 @@ int main(int argc, char * argv[]){
     }
     
     Input_sam_num = Ids.size();
-    
+	
     switch (Step){
         
     //Step 0: Parallel-META
     case 0:
                Check_Path(Singlesample_dir.c_str(), 1);
                Check_Path(Singlesamplelist_dir.c_str(), 1);
-         
+         	   Check_Path(Temp_dir.c_str(), 1);
                
                if (Load_List(Seq_list_file.c_str(), Seq_files, List_prefix) == 0){
                                               string error_info = "Error: Please check the sequence list file (-i) or the list path prefix (-p)";
@@ -72,14 +75,20 @@ int main(int argc, char * argv[]){
                                                  cerr << error_info << endl;
                                                  Echo_Error(error_info.c_str(), Error_file.c_str());
                                                  return 0;
-                                                 }
                                     }
+                                    for (int i = 0; i < Ids.size(); i ++){
+                                		if( Check_Format( Seq_files[i * 2].c_str() )== 0 || Check_Format(Seq_files[i * 2 +1].c_str() ) ==0 ){//fasta format
+											cerr << "Error: For pair-end sequences only support fastq format" << endl;
+											return 0;
+										}
+									}
+                }
                else if (Seq_files.size() != Ids.size()){
                                     string error_info = "Error: Sequence files (pairs) and meta data should have the same sample number and order";
                                     cerr << error_info << endl;
                                     Echo_Error(error_info.c_str(), Error_file.c_str());
                                     return 0;
-                                    }
+                }
             
                //format_seq
                /*
@@ -96,6 +105,12 @@ int main(int argc, char * argv[]){
                }
                */
                
+               //check search database similarity
+    			if (db_similarity <= 0 || db_similarity > 1){
+    						cerr <<"Error: Please input right similarity, the value range is from 0 to 1" << endl;
+    						exit(0);
+				}
+				
                //profiling
                cout << endl << "Microbial Community profiling" << endl;    
                outscript << endl << "#Microbial Community profiling" << endl;   
@@ -105,11 +120,14 @@ int main(int argc, char * argv[]){
                                
                                cout << endl << "Processing sample " << i + 1 << " of " << Ids.size() << endl;   
                                if (Is_paired_seq) //pair -end                            
-                                  sprintf(command, "%s/PM-parallel-meta -r %s -R %s -o %s -t %d -e %s -f F -P %s -k %c -D %c", Bin_path.c_str(), Seq_files[i * 2].c_str(), Seq_files[i * 2 + 1].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Align_mode.c_str(), Paired_mode.c_str(), Is_format_check, Ref_db);
+                                  sprintf(command, "%s/PM-parallel-meta -r %s -R %s -o %s -t %d -f F -k %c -D %c -v %c -c %c -d %.2f", Bin_path.c_str(), Seq_files[i * 2].c_str(), Seq_files[i * 2 + 1].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Is_format_check, Ref_db, Is_denoised, Is_nonchimeras, db_similarity);
                                else
-                                   sprintf(command, "%s/PM-parallel-meta -%c %s -o %s -t %d -e %s -f F -L %d -k %c -D %c", Bin_path.c_str(), Seq_type, Seq_files[i].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Align_mode.c_str(), Length_t, Is_format_check, Ref_db);
-                               Run_With_Error(command, "PM-parallel-meta", Error_file.c_str());
+                                   sprintf(command, "%s/PM-parallel-meta -%c %s -o %s -t %d -f F -L %d -k %c -D %c -v %c -c %c -d %.2f", Bin_path.c_str(), Seq_type, Seq_files[i].c_str(), (Singlesample_dir + "/" + Ids[i]).c_str(), Coren, Length_t, Is_format_check, Ref_db, Is_denoised, Is_nonchimeras, db_similarity);
+                               Run_With_Error(command, "PM-parallel-meta", tmpError_file.c_str());
+                               
+                               //system(command);
                                outscript << command << endl;
+                               
                                }                              
               //taxa list
               Taxa_list_file = Singlesamplelist_dir + "/taxa.list";
@@ -128,7 +146,7 @@ int main(int argc, char * argv[]){
            Check_Path(Alpha_dir.c_str(), 1);
            Check_Path(Beta_dir.c_str(), 1);
            Check_Path(Sampleview_dir.c_str(), 1);
-           Check_Path(Temp_dir.c_str(), 1);
+           
            
            //make OTU table
            switch (Mode){
@@ -508,8 +526,8 @@ int main(int argc, char * argv[]){
     Print_Report(Report_file.c_str());
     Copy_Index(Out_path.c_str());
     
-    cout << endl << "Parallel-META Pipeline Finished" << endl;
-    outscript << endl << "#Parallel-META Pipeline Finished" << endl;
+    cout << endl << "Parallel-Meta Pipeline Finished" << endl;
+    outscript << endl << "#Parallel-Meta Pipeline Finished" << endl;
     cout << "Please check the analysis results and report at " << Out_path <<endl;
     
     return 0;

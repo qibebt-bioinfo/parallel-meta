@@ -1,7 +1,7 @@
-# Parallel-META 3 users’ manual
+# Parallel-META 3 users' manual
 
-![Version](https://img.shields.io/badge/Version-3.5.4-brightgreen)
-![Release date](https://img.shields.io/badge/Release%20date-Oct.%2020%2C%202020-brightgreen)
+![Version](https://img.shields.io/badge/Version-3.6-brightgreen)
+![Release date](https://img.shields.io/badge/Release%20date-Dec.%207%2C%202020-brightgreen)
 
 
 # Introduction
@@ -40,13 +40,10 @@ OpenMP library is the C/C++ parallel computing library. Most Linux releases have
 
 For statistical analysis and pdf format output, Parallel-META 3 requires cran-R (<http://cran.r-project.org/>) 3.2 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
 
-## Bowtie2 (2.1.0 or higher, included in the package)
-
-Bowtie2 has been integrated in the package. If you want to install/update manually, please download from
-
-<http://sourceforge.net/projects/bowtie-bio/files/bowtie2/>
-
-and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+## Vsearch (included in the package)
+Vsearch has been integrated in the package. If you want to install/update manually, please download from
+https://sourceforge.net/projects/vsearch/
+and put the “vsearch”to $ParallelMETA/Aligner/bin/.
 
 ## HMMER 3 (3.0 or higher, included in the package)
 
@@ -74,7 +71,7 @@ b. Install
 ### Tips for the Automatic installation
 
 1. Please “cd parallel-meta” directory before run the automatic installer.
-2. The automatic installer only configures the environment variables to the default configuration files of “~/.bashrc” or “~/.bash_profile”. If you want to configure the environment variables to other configuration file please use the manual installation.
+2. The automatic installer only configures the environment variables to the default configuration files of “\~/.bashrc” or “\~/.bash_profile”. If you want to configure the environment variables to other configuration file please use the manual installation.
 3. If the automatic installer failed, Parallel-META 3 can still be installed manually by the following steps.
 
 ## Manual installation
@@ -85,7 +82,7 @@ a. Extract the package:
 
 	tar –xzvf parallel-meta-3.tar.gz
 
-b. Configure the environment variables (default environment variable configuration file is located at “~/.bashrc” or “~/.bash_profile”)
+b. Configure the environment variables (default environment variable configuration file is located at “\~/.bashrc” or “\~/.bash_profile”)
 
 	export ParallelMETA=Path to Parallel-META 3
 	export PATH=”$PATH:$ParallelMETA/bin”
@@ -121,42 +118,46 @@ The PM-pipeline is an integrated automatic pipeline for multiple sample analysis
 
 	PM-pipeline [Option] value
 
-	[Options]:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
-		-m Meta data file [Required] (See Meta-data format)
-		
-	Input options:
-		-i Sequence list file, pair-ended sequences are supported [Conflicts with l] (See Sequence format and sequence list)
-		-p List file path prefix [Optional for -i]
-	   or
-		-l Taxonomic analysis results list [Conflicts with -i] (See Single_Sample.List)
-		-p List file path prefix [Optional for -l]
-	   or
-		-T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i] (See Abundance table)
-	
-	Profiling parameters:
-		-M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F
-		-e Alignment mode, 0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3
-		-P (upper) Pair-end sequence orientation, 0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0
-		-r rRNA copy number correction, T(rue) or F(alse), default is T
-		-a rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [optional for -M T]
-		-k Sequence format check, T(rue) or F(alse), default is F
-		-f Functional analysis, T(rue) or F(alse), default is T
-	
-	Statistic parameters:
-		-L (upper) Taxonomical levels (1-6: Phylum - Species). Multiple levels are accepted
-		-w Taxonomical distance type, 0: weighted, 1: unweigthed, 2: both, default is 2
-		-F (upper) Functional levels (Level 1, 2, 3 or 4 (KO number)). Multiple levels are accepted
-		-s Sequence number normalization depth, 0 is disabled, default is disable
-		-b Bootstrap for sequence number normalization, default is 200, maximum is 1000
-		-R (upper) Rarefaction curve, T(rue) or F(alse), default is F
-		-E (upper) If the samples are paired, T(rue) or F(alse), default is F
-		-C (upper) Cluter number, default is 2
-		-G (upper) Network analysis edge threshold, default is 0.5
-	
-	Other options:
-		-t cpu core number, default is auto
-		-h Help
+	Options:
+		 -D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)), or C (GreenGenes (16S rRNA, 99% level))
+		-m Meta data file [Required]
+
+        [Input options, required]
+          -i Sequence files list, pair-ended sequences are supported [Conflicts with -l]
+          -p List file path prefix [Optional for -i]
+        or
+          -l Taxonomic analysis results list [Conflicts with -i]
+          -p List file path prefix [Optional for -l]
+        or
+          -T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i]
+          -v ASV denoising, T(rue) or F(alse), default is T [optional for -i]
+          -c Chimera removal, T(rue) or F(alse), default is T [optional for -i]
+          -d Sequence alignment threshold (float value 0~1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-n F) [optional for -i]
+
+        [Output options]
+          -o Output path, default is "default_out"
+
+        [Profiling parameters]
+          -M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F
+          -r rRNA copy number correction, T(rue) or F(alse), default is T
+          -a rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [optional for -M T]
+          -k Sequence format check, T(rue) or F(alse), default is F
+          -f Functional analysis, T(rue) or F(alse), default is T
+
+        [Statistic parameters]
+          -L (upper) Taxonomical levels (1-6: Phylum - Species). Multiple levels are accepted
+          -w Taxonomical distance type, 0: weighted, 1: unweigthed, 2: both, default is 2
+          -F (upper) Functional levels (Level 1, 2, 3 or 4 (KO number)). Multiple levels are accepted
+          -s Sequence number normalization depth, 0 is disabled, default is disable
+          -b Bootstrap for sequence number normalization, default is 200, maximum is 1000
+          -R (upper) Rarefaction curve, T(rue) or F(alse), default is F
+          -E (upper) If the samples are paired, T(rue) or F(alse), default is F
+          -C (upper) Cluster number, default is 2
+          -G (upper) Network analysis edge threshold, default is 0.5
+
+        [Other options]
+          -t cpu core number, default is auto
+          -h help
 		
 Notice:
 1. Pair-ended sequences are supported for 16S rRNA sequences (See Sequence format and sequence list).
@@ -174,28 +175,24 @@ The PM-parallel-meta is the profiling tool for sequences. It accepts single shot
 	PM-parallel-meta [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+        -D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)), or C (GreenGenes (16S rRNA, 99% level))
+        [Input options, required]
+          -m Input single sequence file (Shotgun) [Conflicts with -r and -R]
+          or
+          -r Input single sequence file (rRNA targeted) [Conflicts with -m]
+          -R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]
+          -v ASV denoising, T(rue) or F(alse), default is T [optional for -i]
+          -c Chimera removal, T(rue) or F(alse), default is T [optional for -i]
+          -d Sequence alignment threshold (float value 0-1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-n F) [optional for -i]
 
-	[Input options, required]
-		-m Input single sequence file (Shotgun) [Conflicts with -r and -R]
-	   or
-		-r Input single sequence file (rRNA targeted) [Conflicts with -m]
-		-R (upper) Input paired sequence file [Optional for -r, Conflicts with -m]
-		-P (upper) Pair-end sequence orientation for -R
-		   0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0
-	
-	[Output options]
-		-o Output path, default is "Result"
-	
-	[Other options]
-		-e Alignment mode
-			0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3
-		-k Sequence format check, T(rue) or F(alse), default is F
-		-L (upper) rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [Optional for -m, Conflicts with -r]
-		-f Functional analysis, T(rue) or F(alse), default is T
-		-t Cpu core number, default is auto
-		-h Help
-
+        [Output options]
+          -o Output path, default is "Result"
+        [Other options]
+          -k Sequence format check, T(rue) or F(alse), default is F
+          -L (upper) rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [Optional for -m, Conflicts with -r]
+          -f Functional analysis, T(rue) or F(alse), default is T
+          -t Cpu core number, default is auto
+          -h Help
 Example:
 
 	PM-parallel-meta –m meta.fasta –o metaresults –l 150
@@ -262,7 +259,7 @@ The PM-plot-taxa has already been integrated in program PM-parallel-meta.
 
 	PM-plot-taxa [Option] Value
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -296,7 +293,7 @@ The PM-predict-func has already been integrated in program PM-parallel-meta.
 	PM-predict-func [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))  or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -331,7 +328,7 @@ For NSTI (Nearest Sequenced Taxon Index) value calculation of functional analysi
 	PM-predict-func-nsti [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -365,7 +362,7 @@ For evaluation of OTUs to functional profiles.
 	PM-predict-func-contribute [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file
@@ -396,7 +393,7 @@ Used for multi-sample feature selection (with a specified taxonomical level) bas
 	PM-select-taxa [Option] Value
 
 	Option:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, requried]
 		-l Input files list
@@ -467,7 +464,7 @@ For multi-sample comparison & similarity (distance) calculation based on the tax
 	PM-comp-taxa [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Two samples path for single sample comparison
@@ -541,7 +538,7 @@ or
 	PM-rand-rare [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file name
@@ -664,7 +661,7 @@ Used for taxonomy annotation update to 3.3.1 from 3.0-3.3. Notice that this is n
 	PM-update-taxa [Option] Value
 
 	Options:
-		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level))
+		-D (upper) ref database, default is G (GreenGenes-13-8 (16S rRNA, 97% level)), or S (SILVA (16S rRNA, 97% level)), or O (Oral_Core (16S rRNA, 97% level)), or E (SILVA (18S rRNA, 97% level)), or T (ITS (ITS1, 97% level)) or C (GreenGenes (16S rRNA, 99% level))
 
 	[Input options, required]
 		-i Input single file

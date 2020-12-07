@@ -30,7 +30,6 @@ OpenMP library is the C/C++ parallel computing library. Most Linux releases have
 
 ```
 brew install gcc
-
 ```
 ### Rscript environment
 For statistical analysis and pdf format output, Parallel-META 3 requires cran-R (http://cran.r-project.org/) 3.2 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.

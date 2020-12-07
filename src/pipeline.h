@@ -2,6 +2,8 @@
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // Note: Add 18S, Add Table & BIOM
+// Last update time: Dec 1, 2020
+// Updated by Yuzhu Chen
 
 #include <iostream>
 #include <fstream>
@@ -52,6 +54,7 @@ string Func_list_file;
 string List_prefix;
 string Report_file;
 string Error_file;
+string tmpError_file;
 
 string Table_file;
 
@@ -70,13 +73,11 @@ string Singlesamplelist_dir = "Single_Sample.List";
 string Temp_dir = "Temp";
 
 //para
-char Ref_db = 'B'; //B: 16S; E: 18S
+char Ref_db = 'G'; //G: GG97; S: SILVA 16s; O Oral_Core; E: SILVA 18S; T: ITS; C: GG99 
 _PMDB Database;
 
 string Out_path;
 char Seq_type = 'r';
-string Align_mode = "very-sensitive-local";
-string Paired_mode = "fr";
 
 int Length_t = 0;
 int Cluster = 2;
@@ -90,6 +91,11 @@ bool Is_func = true;
 bool Is_rare = false;
 bool Is_rare_curve = false;
 bool Is_paired_seq = false;
+
+//newadd
+char Is_denoised='T';
+char Is_nonchimeras='T';
+double db_similarity=0.99;
 
 int Rare_depth = 0;
 int Bootstrap = DEF_BOOT;
@@ -116,7 +122,7 @@ int Filter_sam_num = 0;
 
 int printhelp(){
     
-    cout << "Welcome to Parallel-META Pipeline" << endl;
+    cout << "Welcome to Parallel-Meta Pipeline" << endl;
     cout << "Version: " << Version << endl;
     cout << "Usage: " << endl;
     cout << "PM-pipeline [Option] Value" << endl;
@@ -135,6 +141,11 @@ int printhelp(){
     cout << "\t  -p List file path prefix [Optional for -l]" << endl;
     cout << "\tor" << endl;
     cout << "\t  -T (upper) Input OTU count table (*.OTU.Count) [Conflicts with -i]" << endl;
+    
+    //newadd
+    cout << "\t  -v ASV denoising, T(rue) or F(alse), default is T [optional for -i]" << endl;
+    cout << "\t  -c Chimera removal, T(rue) or F(alse), default is T [optional for -i]" << endl;
+    cout << "\t  -d Sequence alignment threshold (float value 0~1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-n F) [optional for -i]" << endl;
     cout << endl;
     
     cout << "\t[Output options]" << endl;
@@ -143,8 +154,6 @@ int printhelp(){
     
     cout << "\t[Profiling parameters]" << endl;
     cout << "\t  -M (upper) Sequence type, T (Shotgun) or F (rRNA), default is F" << endl;
-   	cout << "\t  -e Alignment mode, 0: very fast, 1: fast, 2: sensitive, 3: very-sensitive, default is 3" << endl;
-   	cout << "\t  -P (upper) Pair-end sequence orientation, 0: Fwd & Rev, 1: Fwd & Fwd, 2: Rev & Fwd, default is 0" << endl;
     cout << "\t  -r rRNA copy number correction, T(rue) or F(alse), default is T" << endl;
     cout << "\t  -a rRNA length threshold of rRNA extraction. 0 is disabled, default is 0 [optional for -M T]" << endl;
     cout << "\t  -k Sequence format check, T(rue) or F(alse), default is F" << endl;
@@ -181,29 +190,29 @@ void Print_Report(const char * outfilename){
                   return;
                   }
      
-     outfile << "Parallel-META Pipeline Analysis Report" << endl;
+     outfile << "Parallel-Meta Pipeline Analysis Report" << endl;
      outfile << "Version " << Version << endl;
     
      outfile << "Reference sequence database: ";
         outfile << Database.Get_Description() << endl;
      
      if (Step == 0){ //Profiling info
-              outfile << "Input Type: Sequence list" << endl;
-              outfile << "Sequence List: " << Seq_list_file << endl; 
-              outfile << "Sequence Type: ";
-              if (Seq_type == 'm') outfile << "Metagenomic Shotgun Sequences" << endl;
-              else outfile << "Targeted Sequences" << endl; 
+              outfile << "Input type: Sequence list" << endl;
+              outfile << "Sequence list: " << Seq_list_file << endl; 
+              outfile << "Sequence type: ";
+              if (Seq_type == 'm') outfile << "Metagenomic shotgun sequences" << endl;
+              else outfile << "Targeted sequences" << endl; 
               
-              outfile << "Pair-end Sequences : ";
+              outfile << "Pair-end sequences : ";
               if (Is_paired_seq) outfile << "Yes" << endl;
               else outfile << "No" << endl;                                                        
               }
      else {
           switch (Mode){
-                 case 0: outfile << "Input Type: Taxonomic analysis results list" << endl;
-                         outfile << "Results List: " << Taxa_list_file << endl;
+                 case 0: outfile << "Input type: Taxonomic analysis results list" << endl;
+                         outfile << "Results list: " << Taxa_list_file << endl;
                          break;
-                 case 1: outfile << "Input Type: OTU table" << endl;
+                 case 1: outfile << "Input type: OTU table" << endl;
                          outfile << "OTU table file: " << Table_file << endl;
                          break;
                  }
@@ -219,9 +228,23 @@ void Print_Report(const char * outfilename){
      
      outfile << "Sequence Normalization Bootstrap: ";   
      if (Is_rare) outfile << Bootstrap << endl;
-     else outfile << "NA" << endl;    
+     else outfile << "NA" << endl;   
+	  
+     if (Seq_type == 'r'){
+     	//denoise nonchime
+     	outfile << "ASV denoising: ";
+     	if (Is_denoised == 'T') outfile << " Yes" <<endl;
+     	else outfile << " No" << endl;
+     
+     	outfile << "Chimera removal: ";
+     	if (Is_nonchimeras == 'T') outfile << " Yes" <<endl;
+     	else outfile << " No" << endl;
+	 }
+       
+     outfile << "Sequence alignment threshold: ";
+     outfile <<  db_similarity <<endl;   
                     
-     outfile << "Functional Anlaysis: ";
+     outfile << "Functional anlaysis: ";
      if (Is_func) outfile << "Yes" << endl;
      else outfile << "No" << endl;
      
@@ -316,7 +339,7 @@ int Parse_Para(int argc, char * argv[]){
     Bin_path = Check_Env() + "/bin/";
     R_path = Check_Env() + "/Rscript";
     
-    Ref_db = 'B';
+    Ref_db = 'G';
     
     List_prefix = "";
     
@@ -380,24 +403,14 @@ int Parse_Para(int argc, char * argv[]){
                             case 'p': List_prefix = argv[i+1]; break;
                                       
                             case 'o': Out_path = argv[i+1]; break;
-                 
-                            case 'e' : switch (argv[i+1][0]){
-                                                             case '0': Align_mode = "very-fast-local"; break;
-                                                             case '1': Align_mode = "fast-local"; break;
-                                                             case '2': Align_mode = "sensitive-local"; break;
-                                                             case '3': Align_mode = "very-sensitive-local"; break;
-                                                             default: Align_mode = "very-sensitive-local"; break;                   
-                                              }
-                                        break; //Default is "very-sensitive-local"
-                            case 'P': switch (argv[i+1][0]){
-                                                             case '0': Paired_mode = "fr"; break;
-                                                             case '1': Paired_mode = "ff"; break;
-                                                             case '2': Paired_mode = "rf"; break;
-                                                             default: Paired_mode = "fr"; break;
-                                                             }
-                                       break; // Default is "fr"
                                        
-                            case 'M': if ((argv[i+1][0] == 'T') || (argv[i+1][0]) == 't' ) Seq_type = 'm'; break;
+                            case 'M': if ((argv[i+1][0] == 'T') || (argv[i+1][0]== 't')) {
+                                                Seq_type = 'm'; 
+                                                Is_denoised = 'F';
+                                                Is_nonchimeras = 'F';
+                                                db_similarity =0.97;
+							          }
+							          break;
                             case 'r': if ((argv[i+1][0] == 'F') || (argv[i+1][0]) == 'f' ) Is_cp = 'F'; break;
                             case 'a': Length_t = atoi(argv[i+1]); break; 
                             case 'k': if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T' )) Is_format_check = 'T'; 
@@ -405,7 +418,7 @@ int Parse_Para(int argc, char * argv[]){
                                       break; 
                             
                             //adv args                                                                                                                  
-                            case 'f': if ((argv[i+1][0] == 'f') || (argv[i+1][0]) == 'F' ) Is_func = false; break;
+                            case 'f': if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F' )) Is_func = false; break;
                             
                             case 'L': Parse_TLevel(argv[i+1]); break;
                             case 'F': Parse_FLevel(argv[i+1]); break;                                                                
@@ -420,7 +433,23 @@ int Parse_Para(int argc, char * argv[]){
                             case 'E': if ((argv[i+1][0] == 'T') || (argv[i+1][0]) == 't' ) Is_pair = 'T'; break;
                             case 'C': Cluster = atoi(argv[i+1]); break;
                             case 'G': Network_t = atof(argv[i+1]); break;
-                            
+                            //newadd
+							case 'v' : if(Seq_type == 'm'){
+											Is_denoised = 'F';
+									   }else{
+									   		if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_denoised = 'T';  //Default is true
+									   		else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F'))	Is_denoised = 'F';
+									   		if(Is_denoised == 'F') db_similarity =0.97;
+									   }
+									   break; 
+							case 'c' : if(Seq_type == 'm'){
+											Is_nonchimeras = 'F';
+									   }else{
+											if ((argv[i+1][0] == 't') || (argv[i+1][0] == 'T')) Is_nonchimeras = 'T';  //Default is true
+									   		else if ((argv[i+1][0] == 'f') || (argv[i+1][0] == 'F'))	Is_nonchimeras = 'F';
+									   }
+									   break;				   
+							case 'd' : db_similarity = atof(argv[i+1]);break; 
                             //other args
                             case 't': Coren = atoi(argv[i+1]); break;         
                             case 'h': printhelp(); break;
@@ -449,6 +478,7 @@ int Parse_Para(int argc, char * argv[]){
     
     Report_file = Out_path + "/Analysis_Report.txt";
     Error_file = Out_path + "/error.log";
+    tmpError_file= Temp_dir + "/tmperror.log";
     remove(Error_file.c_str());
     
     int Max_Core_number = sysconf(_SC_NPROCESSORS_CONF);

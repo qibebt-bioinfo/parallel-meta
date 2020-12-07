@@ -2,6 +2,8 @@
 // Added CIGAR
 // _OTU_parser
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
+// Last update time: Dec 1, 2020
+// Updated by Yuzhu Chen
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -60,23 +62,34 @@ void Parse_Taxonomy(const char * infilename, const char * outfilename, _OTU_Pars
                   exit(0);
                   }
     
-    outfile << "#Sequence_Id\tDatabase_OTU\tPOS\tCIGAR\tTaxonomy" << endl;
+    //outfile << "#Sequence_Id\tDatabase_OTU\tPOS\tCIGAR\tTaxonomy" << endl;
+    outfile << "#Database_OTU\tCount\tTaxonomy" << endl;
     
     unsigned int total_count = 0;
     
     string buffer;
-    string last_seq_id = "";
+    // string last_seq_id = "";
     
     set <string> a_diver_table [LEVEL];
         
     while(getline(infile, buffer)){
                           if (buffer.size()==0) continue;
                           stringstream strin(buffer);
-                          string seq_id, database_id;
-                          int flag, mapq, pos;
-                          string cigar;
-                          strin >> seq_id >> flag >> database_id >> pos >> mapq >> cigar;
-                                                    
+                          
+                          //string seq_id, database_id;
+                          //int flag, mapq, pos;
+                          //string cigar;
+                          //strin >> seq_id >> flag >> database_id >> pos >> mapq >> cigar;
+                           
+						  string database_id,count;      
+						  strin >> database_id >> count;
+						  
+						  int m_count = atoi(count.c_str());
+						  
+						  if (database_id.find("#OTU") != string::npos){//table first line 
+						  	continue;
+						  }
+						                     
                           if (is_paired)
                              getline(infile, buffer);
                           
@@ -88,11 +101,12 @@ void Parse_Taxonomy(const char * infilename, const char * outfilename, _OTU_Pars
                                                  continue;
                                                  }                                                                                                        
                           */                                              
-                          if (seq_id == last_seq_id) continue; //Duplications
+                          /*if (seq_id == last_seq_id) continue; //Duplications
                           else last_seq_id = seq_id;
-                          
-                          outfile << seq_id << "\t" << database_id << "\t" << pos << "\t" << cigar << "\t";
-                              
+                          */
+                          //outfile << seq_id << "\t" << database_id << "\t" << pos << "\t" << cigar << "\t";
+                          outfile << database_id << "\t" << count << "\t";
+						      
                           //Output the taxonomy annotation
                           string taxa = otu_parser.Get_taxa_by_OTU(database_id);
                           outfile << taxa << endl;
@@ -117,7 +131,7 @@ void Parse_Taxonomy(const char * infilename, const char * outfilename, _OTU_Pars
                           
                           a_diver_table [LEVEL - 1].insert(database_id); //OTU
                           
-                          match_count ++;                                                    
+                          match_count =match_count + m_count;                                                    
                           }
                           
     
@@ -139,8 +153,11 @@ unsigned int Out_Taxonomy(const char * infilename, string out_path, _PMDB db, in
     string outfilename = out_path + "/classification.txt";
     string outfilename_detail = out_path + "/classification_detail.txt";
     
-    Parse_Taxonomy(infilename, outfilename_detail.c_str(), otu_parser, 0, a_diver, is_paired, match_count, drop_count);
-    otu_parser.Update_class_taxa(outfilename_detail.c_str(), outfilename.c_str()); 
+    //Parse_Taxonomy(infilename, outfilename_detail.c_str(), otu_parser, 0, a_diver, is_paired, match_count, drop_count);
+    Parse_Taxonomy(infilename, outfilename.c_str(), otu_parser, 0, a_diver, is_paired, match_count, drop_count);
+    
+	//otu_parser.Update_class_taxa(outfilename_detail.c_str(), outfilename.c_str()); 
+    otu_parser.Update_class_taxa(outfilename.c_str(), outfilename.c_str()); 
     
     cout << endl << match_count << " taxonomy annotations are parsed out" << endl << endl;
     

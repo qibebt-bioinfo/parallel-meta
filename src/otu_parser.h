@@ -3,6 +3,8 @@
 // Updated at Dec 27, 2018
 // Updated by Xiaoquan Su
 // Version 3.4.2 or above with _OTU_Parser
+// Last update time: Dec 1, 2020
+// Updated by Yuzhu Chen
 
 #ifndef otu_parser_h
 #define otu_parser_h
@@ -64,7 +66,7 @@ int _OTU_Parser::Output_hash_to_table(const char * tablefilename, hash_map<strin
                  
                   for (hash_map<string, int, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
                      
-                     float cp = 1;
+                     float cp = 1; 
                      if ((is_cp) && (Cp_number.count(miter->first) != 0))
                                  cp = Cp_number[miter->first];
                      
@@ -94,7 +96,6 @@ int _OTU_Parser::Output_hash_to_table(const char * tablefilename, hash_map<strin
                  }
                                            
 int _OTU_Parser::Update_class_taxa(const char * infilename, const char * outfilename){
-                 
                  hash_map<string, int, std_string_hash> otu_count;
                  int count = Load_file_to_hash(infilename, otu_count);
                  Output_hash_to_table(outfilename, otu_count, true);
@@ -103,7 +104,6 @@ int _OTU_Parser::Update_class_taxa(const char * infilename, const char * outfile
                  }   
             
 int _OTU_Parser::Load_file_to_hash(const char * classfilename, hash_map<string, int, std_string_hash> & otu_count){
-                 
                     //fgets
                     FILE * fptr = fopen(classfilename, "r");
                     if (fptr == NULL){
@@ -159,19 +159,18 @@ int _OTU_Parser::Load_file_to_hash(const char * classfilename, hash_map<string, 
                  }
                                          
 string _OTU_Parser::Get_taxa_by_OTU(string otu){
-                    
                     if (OTU_taxa_table.count(otu) != 0)
                        return OTU_taxa_table[otu];
                     return "Unclassified";
                     }
             
 string _OTU_Parser::Get_taxa_by_OTU(string otu, int level){
-                   
                    string taxon = "Unclassified";
                    
                    if ((level > TAXA_LEVEL) || (level < 0)) return taxon;
                    
                    if (OTU_taxa_table.count(otu) == 0)
+                   
                       return taxon;
                       
                    string otu_taxa = OTU_taxa_table[otu];
@@ -224,7 +223,7 @@ string _OTU_Parser::Get_taxa_by_OTU(string otu, int level){
                    }
              
 void _OTU_Parser::Get_taxa_by_OTU(string otu, string * taxa, int level){
-                 
+
                  if ((level > TAXA_LEVEL)) level = TAXA_LEVEL;
                  
                  string otu_taxa = "Unclassified";
@@ -282,7 +281,6 @@ void _OTU_Parser::Get_taxa_by_OTU(string otu, string * taxa, int level){
             }
                     
 float _OTU_Parser::Get_cp_by_OTU(string otu){
-                    
                     if (Cp_number.count(otu) != 0)
                        return Cp_number[otu];
                     return 1;

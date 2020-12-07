@@ -123,8 +123,12 @@ int _Table_Format::Load_Table(const char * infilename){
     stringstream strin(buffer);
     string feature_name;
     strin >> feature_name; // Title
-    while(strin >> feature_name)
-        Features.push_back(feature_name);
+    while(strin >> feature_name){
+		//cout << feature_name<< "\t" ;
+    	Features.push_back(feature_name);
+	}
+	//cout<<endl; 
+
     
     //Data
     while(getline(infile, buffer)){
@@ -134,9 +138,14 @@ int _Table_Format::Load_Table(const char * infilename){
         
         vector <float> abd;
         float a_abd;
-        while(strin >> a_abd)
-            abd.push_back(a_abd);
-        
+        while(strin >> a_abd){
+        	//cout << a_abd << "\t";
+        	abd.push_back(a_abd);
+		}
+		//cout<<endl;
+
+        //cout<< abd.size() <<endl;
+        //cout<< Features.size() <<endl;
         //check feature number
         if (abd.size() != Features.size()){
             cerr << "Error: Sample: " << sample_id << " does not have " << Features.size() << " features" << endl;

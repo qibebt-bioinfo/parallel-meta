@@ -34,10 +34,10 @@ brew install gcc
 ### Rscript environment
 For statistical analysis and pdf format output, Parallel-META 3 requires cran-R (http://cran.r-project.org/) 3.2 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
 
-## Vsearch (included in the package)
+### Vsearch (included in the package)
 Vsearch has been integrated in the package. If you want to install/update manually, please download from
 https://sourceforge.net/projects/vsearch/
-and put the “vsearch”to $ParallelMETA/Aligner/bin/.
+and put the “vsearch” to $ParallelMETA/Aligner/bin/.
 
 ### HMMER 3 (3.0 or higher, included in the package)
 HMMER3 has been integrated in the package. If you want to install/update manually, please download from

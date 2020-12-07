@@ -1,7 +1,7 @@
 # Parallel-META 3
 
-![Version](https://img.shields.io/badge/Version-3.5.4-brightgreen)
-![Release date](https://img.shields.io/badge/Release%20date-Oct.%2020%2C%202020-brightgreen)
+![Version](https://img.shields.io/badge/Version-3.6-brightgreen)
+![Release date](https://img.shields.io/badge/Release%20date-Dec.%207%2C%202020-brightgreen)
 
 ## Contents
 
@@ -35,10 +35,10 @@ brew install gcc
 ### Rscript environment
 For statistical analysis and pdf format output, Parallel-META 3 requires cran-R (http://cran.r-project.org/) 3.2 or higher for the execution of “.R” scripts. Then all packages could be automatically installed and updated by the Parallel-META 3 installer.
 
-## Bowtie2 (2.1.0 or higher, included in the package)
-Bowtie2 has been integrated in the package. If you want to install/update manually, please download from
-<http://sourceforge.net/projects/bowtie-bio/files/bowtie2/>
-and put the “bowtie-align-s”to $ParallelMETA/Aligner/bin/.
+## Vsearch (included in the package)
+Vsearch has been integrated in the package. If you want to install/update manually, please download from
+https://sourceforge.net/projects/vsearch/
+and put the “vsearch”to $ParallelMETA/Aligner/bin/.
 
 ### HMMER 3 (3.0 or higher, included in the package)
 HMMER3 has been integrated in the package. If you want to install/update manually, please download from

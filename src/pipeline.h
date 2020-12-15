@@ -145,7 +145,7 @@ int printhelp(){
     //newadd
     cout << "\t  -v ASV denoising, T(rue) or F(alse), default is T [optional for -i]" << endl;
     cout << "\t  -c Chimera removal, T(rue) or F(alse), default is T [optional for -i]" << endl;
-    cout << "\t  -d Sequence alignment threshold (float value 0~1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-n F) [optional for -i]" << endl;
+    cout << "\t  -d Sequence alignment threshold (float value 0~1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-v F) [optional for -i]" << endl;
     cout << endl;
     
     cout << "\t[Output options]" << endl;
@@ -203,7 +203,7 @@ void Print_Report(const char * outfilename){
               if (Seq_type == 'm') outfile << "Metagenomic shotgun sequences" << endl;
               else outfile << "Targeted sequences" << endl; 
               
-              outfile << "Pair-end sequences : ";
+              outfile << "Pair-end sequences: ";
               if (Is_paired_seq) outfile << "Yes" << endl;
               else outfile << "No" << endl;                                                        
               }
@@ -219,7 +219,7 @@ void Print_Report(const char * outfilename){
           }
      
      outfile << "Copy number correction: ";
-     if (Is_cp == 'T') outfile << " Yes" << endl;
+     if (Is_cp == 'T') outfile << "Yes" << endl;
      else outfile << "No" << endl;
      
      outfile << "Sequence Normalization Depth: ";
@@ -233,11 +233,11 @@ void Print_Report(const char * outfilename){
      if (Seq_type == 'r'){
      	//denoise nonchime
      	outfile << "ASV denoising: ";
-     	if (Is_denoised == 'T') outfile << " Yes" <<endl;
+     	if (Is_denoised == 'T') outfile << "Yes" <<endl;
      	else outfile << " No" << endl;
      
      	outfile << "Chimera removal: ";
-     	if (Is_nonchimeras == 'T') outfile << " Yes" <<endl;
+     	if (Is_nonchimeras == 'T') outfile << "Yes" <<endl;
      	else outfile << " No" << endl;
 	 }
        

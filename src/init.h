@@ -88,7 +88,7 @@ int Print_Help(){
     //newadd
     cout << "\t  -v ASV denoising, T(rue) or F(alse), default is T [optional for -i]" << endl;
     cout << "\t  -c Chimera removal, T(rue) or F(alse), default is T [optional for -i]" << endl;
-    cout << "\t  -d Sequence alignment threshold (float value 0-1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-n F) [optional for -i]" << endl;
+    cout << "\t  -d Sequence alignment threshold (float value 0-1), default is 0.99 for ASV enabled and 0.97 for ASV disabled (-v F) [optional for -i]" << endl;
     cout << endl;
     
     cout << "\t[Output options]" << endl;

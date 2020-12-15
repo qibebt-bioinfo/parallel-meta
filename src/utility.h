@@ -1,7 +1,7 @@
 // Updated at Aug 21, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Last update time: Nov 6, 2020
+// Last update time: Dec 15, 2020
 // Updated by Yuzhu Chen
 // Notes: Get_Count_fastq
 #ifndef _UTILITY_H
@@ -133,7 +133,7 @@ unsigned int Get_Count_fastq(const char * infilename){
          
          while (getline(infile, buffer)){
                
-               if (buffer[0] == '+') count ++;
+               if (buffer[0] == '+' && buffer.size() == 1) count ++;
                
                }
          

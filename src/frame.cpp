@@ -1,7 +1,7 @@
 // Updated at Sept 19, 2018
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Last update time: Dec 1, 2020
+// Last update time: Dec 15, 2020
 // Updated by Yuzhu Chen
 // Notes: modify function call
 #include <iostream>
@@ -71,7 +71,7 @@ void Single_Run(_Para para){
 			//merge
 			mergefile = Merge_Pairend(para.Align_exe_name.c_str(), para.Infilename, para.Infilename2, para.Out_path + "/tmp");
 			//dereplication, denoise, nonchimeras
-			handlefile = Handle_seq(para.Align_exe_name.c_str(), mergefile , para.Out_path + "/tmp", para.Is_denoised, para.Is_nonchimeras, rna_count, asv_count);
+			handlefile = Handle_seq(para.Align_exe_name.c_str(), mergefile , para.Out_path + "/tmp", para.Is_denoised, para.Is_nonchimeras, rna_count, asv_count,0);
 			//search database
 			Search_db(para.Align_exe_name.c_str(), handlefile, para.Out_path + "/tmp", para.Database.Get_Path()+ "/database.fa", para.db_similarity,'F');
 			if (rna_count < 0) {                       
@@ -82,7 +82,7 @@ void Single_Run(_Para para){
 		
 	}else{//single
 		//dereplication, denoise, nonchimeras
-		handlefile = Handle_seq(para.Align_exe_name.c_str(), para.Infilename, para.Out_path + "/tmp", para.Is_denoised, para.Is_nonchimeras, rna_count, asv_count);	
+		handlefile = Handle_seq(para.Align_exe_name.c_str(), para.Infilename, para.Out_path + "/tmp", para.Is_denoised, para.Is_nonchimeras, rna_count, asv_count, para.Format);	
 		
 		//search database
 		Search_db(para.Align_exe_name.c_str(), handlefile, para.Out_path + "/tmp", para.Database.Get_Path()+ "/database.fa", para.db_similarity,'F');

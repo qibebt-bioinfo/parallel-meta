@@ -1,7 +1,7 @@
 // Updated at May 18, 2016
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 //version 3.1 or above with Bowtie2
-// Last update time: Dec 1, 2020
+// Last update time: Dec 15, 2020
 // Updated by Yuzhu Chen
 // Notes: change to ASV
 
@@ -37,13 +37,15 @@ string Merge_Pairend(string programname, string infilename_1, string infilename_
     
     cout << "There are " << seq_n_1 << " paired sequences in total" << endl << endl;
     
-    mkdir((outpath + "/maptemp").c_str(), 0755);
+    //mkdir((outpath + "/maptemp").c_str(), 0755);
 	
 	//command
     
     char command[BUFFER_SIZE];
     
-	sprintf(command,"%s --fastq_mergepairs %s --reverse %s --fastaout %s/merged",programname.c_str(),infilename_1.c_str(), infilename_2.c_str(),outpath.c_str()); 
+	//sprintf(command,"%s --fastq_mergepairs %s --reverse %s --fastaout %s/merged",programname.c_str(),infilename_1.c_str(), infilename_2.c_str(),outpath.c_str()); 
+	
+	sprintf(command,"%s --fastq_mergepairs %s --reverse %s --fastq_minovlen 5 --fastaout %s/merged",programname.c_str(),infilename_1.c_str(), infilename_2.c_str(),outpath.c_str()); 	
 	system(command);
 	
 	cout << "Merging Finished" << endl << endl;   
@@ -51,9 +53,12 @@ string Merge_Pairend(string programname, string infilename_1, string infilename_
     return  mergefile;
 }
 
-string Handle_seq(string programname, string infilename, string outpath, char Is_denoised, char Is_nonchimeras, int & rna_count, int & asv_count){
-    rna_count = Get_Count(infilename.c_str());
-
+string Handle_seq(string programname, string infilename, string outpath, char Is_denoised, char Is_nonchimeras, int & rna_count, int & asv_count, int Format){
+    if(Format == 0){
+    	rna_count = Get_Count(infilename.c_str());
+	}else{
+		rna_count = Get_Count_fastq(infilename.c_str());
+	}
     cout << "There are " << rna_count << " sequences in total" << endl << endl;
     
 	cout << "Profiling starts" << endl << endl;

@@ -36,7 +36,7 @@ For statistical analysis and pdf format output, Parallel-META 3 requires cran-R 
 
 ### Vsearch (included in the package)
 Vsearch has been integrated in the package. If you want to install/update manually, please download from
-https://sourceforge.net/projects/vsearch/
+https://github.com/torognes/vsearch
 and put the “vsearch” to $ParallelMETA/Aligner/bin/.
 
 ### HMMER 3 (3.0 or higher, included in the package)
